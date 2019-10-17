@@ -1,7 +1,9 @@
-package com.example.bibliotecavirtual;
+package com.example.bibliotecavirtual.Activitys;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.bibliotecavirtual.R;
 
 public class MainActivity extends AppCompatActivity {
 
