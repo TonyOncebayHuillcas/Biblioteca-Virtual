@@ -1,4 +1,4 @@
-package com.idnp.biblioteca_virtual;
+package com.example.bibliotecavirtual;
 
 import org.junit.Test;
 
