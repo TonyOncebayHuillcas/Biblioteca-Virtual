@@ -1,4 +1,4 @@
-package com.example.bibliotecavirtual.Activitys.Activitys;
+package com.example.bibliotecavirtual.Activitys;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
