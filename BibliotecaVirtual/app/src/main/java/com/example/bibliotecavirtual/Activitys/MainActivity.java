@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,7 +25,7 @@ import com.example.bibliotecavirtual.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
     ActionBar actionBar;
     Context context;
     private DrawerLayout mDrawerLayout;
@@ -134,6 +135,39 @@ public class MainActivity extends AppCompatActivity {
             set_fragment_page(0);
         }
 
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    @Override
+    public void onTabSelected(ActionBar.Tab arg0,
+                              android.support.v4.app.FragmentTransaction arg1) {
+        // TODO Auto-generated method stub
+        set_fragment_page(Integer.parseInt(arg0.getTag().toString()));
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab arg0,
+                                android.support.v4.app.FragmentTransaction arg1) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab arg0,
+                                android.support.v4.app.FragmentTransaction arg1) {
+        // TODO Auto-generated method stub
     }
 
     public void set_fragment_page(int position){
