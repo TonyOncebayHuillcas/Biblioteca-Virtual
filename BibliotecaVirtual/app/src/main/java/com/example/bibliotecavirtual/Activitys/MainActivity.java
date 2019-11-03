@@ -1,6 +1,9 @@
 package com.example.bibliotecavirtual.Activitys;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -84,5 +88,95 @@ public class MainActivity extends AppCompatActivity {
         menuArray = new ArrayList<HashMap<String,Integer>>();
         HashMap<String, Integer> map = new HashMap<String, Integer>();
 
+        map.put("option", R.string.pagina_principal);
+        map.put("image", R.drawable.ic_person);
+        menuArray.add(map);
+
+        map = new HashMap<String, Integer>();
+        map.put("option", R.string.filtro_por);
+        map.put("image", R.drawable.ic_person);
+        menuArray.add(map);
+
+        map = new HashMap<String, Integer>();
+        map.put("option", R.string.puntaje);
+        map.put("image", R.drawable.ic_person);
+        menuArray.add(map);
+
+        map = new HashMap<String, Integer>();
+        map.put("option", R.string.mi_perfil);
+        map.put("image", R.drawable.ic_person);
+        menuArray.add(map);
+
+        map = new HashMap<String, Integer>();
+        map.put("option", R.string.cerrar_sesion);
+        map.put("image", R.drawable.ic_person);
+        menuArray.add(map);
+
+        mListView = (ListView)findViewById(R.id.list_navigability);
+        mAdapter = new MenuAdapter(getApplicationContext(), menuArray);
+        mListView.setAdapter(mAdapter);
+
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                // TODO Auto-generated method stub
+                set_fragment_page(arg2);
+
+            }
+        });
+
+        if(getIntent().hasExtra("fragment_position")){
+            set_fragment_page(getIntent().getExtras().getInt("fragment_position"));
+        }else {
+            set_fragment_page(0);
+        }
+
+    }
+
+    public void set_fragment_page(int position){
+        Fragment fragment = null;
+        Intent intent = null;
+
+        Bundle args;
+        switch (position) {
+            case 0:
+                //fragment = new HomeFragment();
+                //7args = new Bundle();
+                ///fragment.setArguments(args);
+                break;
+            case 1:
+                //fragment = new ProfileFragment();
+                break;
+            case 2:
+                //intent = new Intent(MainActivity.this, ViewcartActivity.class);
+                break;
+            case 3:
+                //fragment = new QueryFragment();
+                break;
+
+            default:
+                break;
+        }
+        if (intent != null) {
+            startActivity(intent);
+        }
+        if (fragment!=null) {
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getFragmentManager();
+            if (position==0) {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.sample_content_fragment, fragment)
+                        .commit();
+            }else{
+                fragmentManager.beginTransaction()
+                        .replace(R.id.sample_content_fragment, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+            mDrawerLayout.closeDrawer(mDeawerView);
+        }
     }
 }
