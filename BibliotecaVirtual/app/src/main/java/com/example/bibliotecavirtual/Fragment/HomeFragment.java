@@ -45,7 +45,12 @@ public class HomeFragment extends Fragment {
         //itemList = SqliteClass.getInstance(context).databasehelp.ordersql.getAllItem();
         //getList(itemList);
         // Inflate the layout for this fragment
+        if(itemList.size()>0){empty.setVisibility(layout.GONE);} else {empty.setVisibility(layout.VISIBLE);}
         return layout;
+    }
+
+    public void getList(List<DocumentClass> list){
+
     }
 
 
