@@ -9,4 +9,7 @@
     <string name="puntaje">Mi Puntaje</string>
     <string name="mi_perfil">Mi Perfil</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
