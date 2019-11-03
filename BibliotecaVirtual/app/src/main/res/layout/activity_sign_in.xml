@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Activitys.SignInActivity">
 
-    <ScrollView
-        android:id="@+id/register_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ScrollView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
