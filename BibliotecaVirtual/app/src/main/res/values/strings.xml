@@ -10,6 +10,8 @@
     <string name="mi_perfil">Mi Perfil</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
 
+    <string name="fragment_document">Lista de Documentos</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

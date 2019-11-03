@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragment.HomeFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    android:background="@android:color/white">
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorAccent"
+            android:text="@string/fragment_document"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
+    </RelativeLayout>
+    <View android:id="@+id/line_title"
+        android:layout_below="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/darker_gray" />
+    <ListView
+        android:id="@+id/list_documents"
+        android:layout_below="@+id/line_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
 
-</FrameLayout>
+    <TextView
+        android:id="@android:id/empty"
+        android:text="No results found."
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
