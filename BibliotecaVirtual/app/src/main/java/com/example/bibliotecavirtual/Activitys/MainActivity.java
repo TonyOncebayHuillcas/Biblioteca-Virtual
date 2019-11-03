@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.action_bar_title, null);
-        actionBar.setCustomView(v);
+        //View v = inflator.inflate(R.layout.action_bar_title, null);
+        //actionBar.setCustomView(v);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -74,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setHomeButtonEnabled(true);
+        // getSupportActionBar().setBackgroundDrawable(R.drawable.background_01);
+
+        menuArray = new ArrayList<HashMap<String,Integer>>();
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
 
     }
 }
