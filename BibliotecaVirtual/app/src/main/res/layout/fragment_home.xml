@@ -30,11 +30,13 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" />
 
+    <!--
     <TextView
-        android:id="@android:id/empty"
+        android:id="@+id/empty"
         android:text="No results found."
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+        -->
 
 </RelativeLayout>
