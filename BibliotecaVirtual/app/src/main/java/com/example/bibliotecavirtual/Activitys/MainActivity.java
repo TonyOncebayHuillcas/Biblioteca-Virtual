@@ -2,6 +2,7 @@ package com.example.bibliotecavirtual.Activitys;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+//import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,8 @@ import android.widget.ListView;
 
 import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
+import com.example.bibliotecavirtual.Fragment.HomeFragment;
+
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;
@@ -91,17 +94,17 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         HashMap<String, Integer> map = new HashMap<String, Integer>();
 
         map.put("option", R.string.pagina_principal);
-        map.put("image", R.drawable.ic_person);
+        map.put("image", R.drawable.ic_home);
         menuArray.add(map);
 
         map = new HashMap<String, Integer>();
         map.put("option", R.string.filtro_por);
-        map.put("image", R.drawable.ic_person);
+        map.put("image", R.drawable.ic_search);
         menuArray.add(map);
 
         map = new HashMap<String, Integer>();
         map.put("option", R.string.puntaje);
-        map.put("image", R.drawable.ic_person);
+        map.put("image", R.drawable.ic_point);
         menuArray.add(map);
 
         map = new HashMap<String, Integer>();
@@ -111,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         map = new HashMap<String, Integer>();
         map.put("option", R.string.cerrar_sesion);
-        map.put("image", R.drawable.ic_person);
+        map.put("image", R.drawable.ic_logout);
         menuArray.add(map);
 
         mListView = (ListView)findViewById(R.id.list_navigability);
@@ -195,9 +198,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         Bundle args;
         switch (position) {
             case 0:
-                //fragment = new HomeFragment();
-                //7args = new Bundle();
-                ///fragment.setArguments(args);
+                fragment = new HomeFragment();
+                args = new Bundle();
+                fragment.setArguments(args);
                 break;
             case 1:
                 //fragment = new ProfileFragment();
