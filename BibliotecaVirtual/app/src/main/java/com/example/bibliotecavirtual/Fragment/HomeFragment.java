@@ -2,7 +2,7 @@ package com.example.bibliotecavirtual.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
@@ -20,8 +20,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.bibliotecavirtual.Activitys.DetailDocumentActivity;
 import com.example.bibliotecavirtual.Adapters.DocumentAdapter;
 import com.example.bibliotecavirtual.Models.DocumentClass;
+import com.example.bibliotecavirtual.Activitys.NewDocumentActivity;
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;
@@ -64,11 +66,22 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(context, DetailDocumentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
         });
 
         DocEvent = (FloatingActionButton) layout.findViewById(R.id.action_new_event_trip);
+        DocEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewDocumentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                //finish();
+            }
+        });
         return layout;
     }
 

@@ -17,7 +17,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_gravity="center"
-            android:text="Seleccionar Archivo"
+            android:text="Titulo del archivo"
             android:textColor="@color/black"
             android:textSize="34dp"/>
 
@@ -33,37 +33,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Area:"
+                android:text="Subido por:"
                 android:textColor="@color/black"
-                android:textSize="30dp"/>
+                android:textSize="28dp"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimaryDark">
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Tony Oncebay"
+                android:textColor="@color/black"
+                android:textSize="24dp"/>
 
-                <EditText
-                    android:id="@+id/et_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
 
-            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -71,36 +63,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Area"
+                android:textColor="@color/black"
+                android:textSize="28dp" />
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Sistemas"
+                android:textColor="@color/black"
+                android:textSize="24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="Descripción"
                 android:textColor="@color/black"
-                android:textSize="30dp" />
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+                android:textSize="28dp" />
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimaryDark">
-
-                <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
-
-            </android.support.design.widget.TextInputLayout>
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Descripción"
+                android:textColor="@color/black"
+                android:textSize="24dp" />
         </LinearLayout>
 
         <Button
@@ -111,7 +119,7 @@
             android:layout_marginLeft="70dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="50dp"
-            android:text="Guardar"
+            android:text="Descargar"
             android:textColor="@color/colorAccent"
             android:textStyle="bold" />
 

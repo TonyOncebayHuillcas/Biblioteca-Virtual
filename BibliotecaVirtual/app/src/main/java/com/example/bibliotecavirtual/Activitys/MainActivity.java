@@ -1,5 +1,6 @@
 package com.example.bibliotecavirtual.Activitys;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 //import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -210,6 +212,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 break;
             case 3:
                 //fragment = new QueryFragment();
+                break;
+            case 4:
+                //fragment = new QueryFragment();
+                Dialog dialog = new Dialog(context);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.alert_info);
                 break;
 
             default:
