@@ -8,6 +8,7 @@ import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import android.app.Fragment;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     TextView empty;
     Activity activity;
     Context context;
+    FloatingActionButton DocEvent;
     int cnt;
 
     public HomeFragment(){}
@@ -65,6 +67,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
 
             }
         });
+
+        DocEvent = (FloatingActionButton) layout.findViewById(R.id.action_new_event_trip);
         return layout;
     }
 
