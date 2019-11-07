@@ -67,6 +67,8 @@
                     android:id="@+id/tv_thema"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:text="ingenieria"
                     android:layout_weight="1"
                     android:textColor="@color/black"/>

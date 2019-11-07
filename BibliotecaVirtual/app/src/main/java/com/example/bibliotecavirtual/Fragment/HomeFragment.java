@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -58,6 +59,12 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         getList(itemList);
         // Inflate the layout for this fragment
         //if(itemList.size()>0){empty.setVisibility(layout.GONE);} else {empty.setVisibility(layout.VISIBLE);}
+        itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
         return layout;
     }
 
