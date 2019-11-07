@@ -1,5 +1,6 @@
 package com.example.bibliotecavirtual.Activitys;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -19,8 +20,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
@@ -34,6 +37,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
     ActionBar actionBar;
     Context context;
+    Activity activity;
     private DrawerLayout mDrawerLayout;
     private LinearLayout mDeawerView;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
 
         context = this;
+        activity=this;
         settings = getSharedPreferences(ConstValue.MAIN_PREF, 0);
         //cd=new ConnectionDetector(this);
         actionBar = getSupportActionBar();
@@ -215,9 +220,34 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 break;
             case 4:
                 //fragment = new QueryFragment();
-                Dialog dialog = new Dialog(context);
+                final Dialog dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.alert_info);
+                dialog.setContentView(R.layout.alert_logout);
+                TextView head = (TextView) dialog.findViewById(R.id.alert_logout_title);
+                head.setText("Easy Note");
+                TextView content = (TextView) dialog.findViewById(R.id.alert_logout_content);
+                content.setText("Está seguro de cerrar sesión?");
+
+                Button dialogButtonOk = (Button) dialog.findViewById(R.id.alert_ok);
+                dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent login=new Intent(context, LoginActivity.class);
+                        login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //activity.startActivity(login);
+                        dialog.dismiss();
+                        startActivity(login);
+                        activity.finish();
+                    }
+                });
+                Button dialogButtonCancel = (Button) dialog.findViewById(R.id.alert_cancel);
+                dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
                 break;
 
             default:
