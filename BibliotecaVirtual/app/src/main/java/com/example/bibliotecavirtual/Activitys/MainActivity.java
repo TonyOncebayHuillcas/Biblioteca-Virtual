@@ -29,6 +29,7 @@ import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.Fragment.HomeFragment;
 
+import com.example.bibliotecavirtual.Fragment.ProfileFragment;
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 //intent = new Intent(MainActivity.this, ViewcartActivity.class);
                 break;
             case 3:
-                //fragment = new QueryFragment();
+                fragment = new ProfileFragment();
                 break;
             case 4:
                 //fragment = new QueryFragment();
