@@ -5,4 +5,6 @@
     <color name="colorAccent">#B83434</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
+    <color name="found">#bd7a7a</color>
+    <color name="found_white">#DDCECE</color>
 </resources>

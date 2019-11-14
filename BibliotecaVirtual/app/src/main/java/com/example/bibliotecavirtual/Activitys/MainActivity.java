@@ -30,6 +30,7 @@ import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.Fragment.HomeFragment;
 
 import com.example.bibliotecavirtual.Fragment.ProfileFragment;
+import com.example.bibliotecavirtual.Fragment.ScoreFragment;
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 //fragment = new ProfileFragment();
                 break;
             case 2:
-                //intent = new Intent(MainActivity.this, ViewcartActivity.class);
+                fragment = new ScoreFragment();
                 break;
             case 3:
                 fragment = new ProfileFragment();
