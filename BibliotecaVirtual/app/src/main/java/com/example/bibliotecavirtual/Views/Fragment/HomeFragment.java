@@ -1,4 +1,4 @@
-package com.example.bibliotecavirtual.Fragment;
+package com.example.bibliotecavirtual.Views.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,10 +20,10 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.example.bibliotecavirtual.Activitys.DetailDocumentActivity;
+import com.example.bibliotecavirtual.Views.Activitys.DetailDocumentActivity;
 import com.example.bibliotecavirtual.Adapters.DocumentAdapter;
 import com.example.bibliotecavirtual.Models.DocumentClass;
-import com.example.bibliotecavirtual.Activitys.NewDocumentActivity;
+import com.example.bibliotecavirtual.Views.Activitys.NewDocumentActivity;
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;

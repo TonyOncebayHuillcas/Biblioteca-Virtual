@@ -9,11 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activitys.DetailDocumentActivity"></activity>
-        <activity android:name=".Activitys.NewDocumentActivity" />
-        <activity android:name=".Activitys.SignInActivity" />
-        <activity android:name=".Activitys.MainActivity" />
-        <activity android:name=".Activitys.LoginActivity">
+        <activity android:name=".Views.Activitys.RegisterActivity"></activity>
+        <activity android:name=".Views.Activitys.DetailDocumentActivity" />
+        <activity android:name=".Views.Activitys.NewDocumentActivity" />
+        <activity android:name=".Views.Activitys.SignInActivity" />
+        <activity android:name=".Views.Activitys.MainActivity" />
+        <activity android:name=".Views.Activitys.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

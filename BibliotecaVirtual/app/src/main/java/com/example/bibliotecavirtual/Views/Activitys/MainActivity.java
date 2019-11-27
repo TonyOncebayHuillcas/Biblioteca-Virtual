@@ -1,4 +1,4 @@
-package com.example.bibliotecavirtual.Activitys;
+package com.example.bibliotecavirtual.Views.Activitys;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -27,10 +27,10 @@ import android.widget.TextView;
 
 import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
-import com.example.bibliotecavirtual.Fragment.HomeFragment;
+import com.example.bibliotecavirtual.Views.Fragment.HomeFragment;
 
-import com.example.bibliotecavirtual.Fragment.ProfileFragment;
-import com.example.bibliotecavirtual.Fragment.ScoreFragment;
+import com.example.bibliotecavirtual.Views.Fragment.ProfileFragment;
+import com.example.bibliotecavirtual.Views.Fragment.ScoreFragment;
 import com.example.bibliotecavirtual.R;
 
 import java.util.ArrayList;
