@@ -48,14 +48,7 @@
                     android:drawablePadding="5dp"
                     android:hint="Sus nombres"
                     android:textSize="14dp" />
-                <EditText
-                    android:id="@+id/et_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_contacts"
-                    android:drawablePadding="5dp"
-                    android:hint="Apellidos..."
-                    android:textSize="14dp" />
+
                 <EditText
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
@@ -65,20 +58,30 @@
                     android:hint="Email..."
                     android:textSize="14dp"/>
                 <EditText
-                    android:id="@+id/et_area"
+                    android:id="@+id/et_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_contacts"
+                    android:drawablePadding="5dp"
+                    android:hint="Contraseña..."
+                    android:textSize="14dp" />
+                <EditText
+                    android:id="@+id/et_shool"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_area"
                     android:drawablePadding="5dp"
-                    android:hint="Area Especialidad..."
+                    android:hint="Carrera profesional..."
                     android:textSize="14dp" />
+
                 <EditText
-                    android:id="@+id/et_school"
+                    android:id="@+id/et_university"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_school"
                     android:drawablePadding="5dp"
-                    android:hint="Carrera profesional..."
+                    android:text="UNSA"
+                    android:enabled="false"
                     android:textSize="14dp" />
 
             </LinearLayout>
