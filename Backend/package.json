@@ -1,0 +1,26 @@
+{
+  "name": "startup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64topdf": "^1.1.8",
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "js-base64": "^2.5.1",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.22.0",
+    "mongoose": "^5.7.12",
+    "pdf-to-base64": "^1.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
+  }
+}

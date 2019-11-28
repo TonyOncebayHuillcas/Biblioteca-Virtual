@@ -12,10 +12,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.bibliotecavirtual.Config.ConstValue;
+import com.example.bibliotecavirtual.DB.SqliteClass;
+import com.example.bibliotecavirtual.Models.DocumentClass;
 import com.example.bibliotecavirtual.R;
 import com.example.bibliotecavirtual.Utils.ConnectionDetector;
 import com.example.bibliotecavirtual.Utils.Protocol;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     EditText username,password;
@@ -33,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     public String responseString = null;
     ConnectionDetector cn;
     Protocol protocol;
+    ArrayList<DocumentClass> loadDoc=null;
+    DocumentClass documentClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +99,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.getString("estado").equalsIgnoreCase("ok")) {
                     System.out.println("Adentro ");
                     JSONObject json = new JSONObject();
+                    JSONArray jsonArray = null;
                     json = protocol.getJson(ConstValue.URL_GET_DOCUMENTS);
                     System.out.println("Mis documentos: " + json);
+                    jsonArray = json.getJSONArray("documentos");
+
+                    loadDoc= new ArrayList<DocumentClass>();
+                    for(int i=0;i<jsonArray.length();i++){
+                        JSONObject js = jsonArray.getJSONObject(i);
+                        documentClass=  new DocumentClass(js.getInt("id"),js.getString("nombre"),js.getInt("contador"),js.getString("fecha"),js.getString("codTema"),js.getString("codUsuario"),"");
+                        loadDoc.add(documentClass);
+                        SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.addDocument(documentClass);
+                    }
 
 
                 }else {
