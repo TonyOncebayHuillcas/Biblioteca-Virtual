@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
 import com.example.bibliotecavirtual.Models.DocumentClass;
+import com.example.bibliotecavirtual.Models.UserClass;
 import com.example.bibliotecavirtual.R;
 import com.example.bibliotecavirtual.Utils.ConnectionDetector;
 import com.example.bibliotecavirtual.Utils.Protocol;
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     Protocol protocol;
     ArrayList<DocumentClass> loadDoc=null;
     DocumentClass documentClass;
+    UserClass userClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,22 +96,37 @@ public class LoginActivity extends AppCompatActivity {
                 postData.put("contra", password.getText().toString());
 
                 response = protocol.postJson(ConstValue.URL_LOGIN,responseString,postData);
-                System.out.println("MI JSON EVENT: " + response.getString("estado"));
+                System.out.println("MI JSON EVENT: " + response);
 
                 if (response.getString("estado").equalsIgnoreCase("ok")) {
                     System.out.println("Adentro ");
+
                     JSONObject json = new JSONObject();
                     JSONArray jsonArray = null;
-                    json = protocol.getJson(ConstValue.URL_GET_DOCUMENTS);
-                    System.out.println("Mis documentos: " + json);
-                    jsonArray = json.getJSONArray("documentos");
+                    json = protocol.getJson(ConstValue.URL_GET_USER+"/"+response.getString("_id"));
+                    System.out.println("Usuario " +json);
+
+                    JSONObject data = json.getJSONObject("usuario");
+                    userClass = new UserClass(1,data.getString("_id"),data.getString("userName"),data.getString("correo"),data.getString("contra"),"5dd8bd19d099cc00047d2213");
+                    SqliteClass.getInstance(getApplicationContext()).databasehelp.usersql.addUser(userClass);
+
+                    JSONObject jsondoc = new JSONObject();
+                    jsonArray = null;
+                    jsondoc = protocol.getJson(ConstValue.URL_GET_DOCUMENTS);
+                    System.out.println("Mis documentos: " + jsondoc);
+                    JSONArray jsnArray = jsondoc.getJSONArray("documentos");
 
                     loadDoc= new ArrayList<DocumentClass>();
-                    for(int i=0;i<jsonArray.length();i++){
-                        JSONObject js = jsonArray.getJSONObject(i);
-                        documentClass=  new DocumentClass(js.getInt("id"),js.getString("nombre"),js.getInt("contador"),js.getString("fecha"),js.getString("codTema"),js.getString("codUsuario"),"");
-                        loadDoc.add(documentClass);
+                    for(int j=0 ; j<jsnArray.length() ; j++){
+                        JSONObject js = jsnArray.getJSONObject(j);
+                        documentClass=  new DocumentClass(jsnArray.getJSONObject(j).getString("id"),jsnArray.getJSONObject(j).getString("nombre"),jsnArray.getJSONObject(j).getInt("contador"),jsnArray.getJSONObject(j).getString("fecha"),jsnArray.getJSONObject(j).getString("codTema"),jsnArray.getJSONObject(j).getString("codUsuario"),"");
                         SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.addDocument(documentClass);
+                        System.out.println("docu nombre "+documentClass.getNombre());
+                        System.out.println("docu class "+documentClass.getClass());
+                        System.out.println("docu contado "+documentClass.getContador());
+                        System.out.println("docu fecha "+documentClass.getFecha());
+
+                        loadDoc.add(documentClass);
                     }
 
 

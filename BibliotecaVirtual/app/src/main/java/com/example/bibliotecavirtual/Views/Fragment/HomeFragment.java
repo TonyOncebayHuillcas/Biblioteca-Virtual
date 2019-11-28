@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
 import com.example.bibliotecavirtual.Views.Activitys.DetailDocumentActivity;
 import com.example.bibliotecavirtual.Adapters.DocumentAdapter;
@@ -66,6 +67,15 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                //DocumentClass.setIdDoc(String.valueOf(itemList.get(position).getId()));
+                ConstValue.setNombre(itemList.get(position).getNombre());
+                ConstValue.setCodUsuario(itemList.get(position).getCodUsuario());
+                ConstValue.setCodTema(itemList.get(position).getCodTema());
+                ConstValue.setContador(itemList.get(position).getContador());
+
+
                 Intent intent = new Intent(context, DetailDocumentActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
@@ -90,23 +100,15 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         itemList = new ArrayList<DocumentClass>();
         itemList = list;
         cnt=0;
-        for(int z=0; z < itemList.size(); z++){
-            DocumentClass cc = itemList.get(z);
+        for(int z=0; z < list.size(); z++){
+            DocumentClass cc = list.get(z);
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("id", String.valueOf(cc.getId()));
+            //map.put("id", String.valueOf(cc.getId()));
             map.put("name_of_document",cc.getNombre());
             map.put("author",cc.getCodUsuario());
             map.put("thema",cc.getCodTema());
             map.put("cant_descargas",String.valueOf(cc.getContador()));
 
-
-            /*
-            map.put("id", "1");
-            map.put("name_of_document","test");
-            map.put("author","Tony Oncebay Huillcas");
-            map.put("thema","Sistemas");
-            map.put("cant_descargas","23");
-            */
             itemArray.add(map);
         }
         adapter = new DocumentAdapter(activity, itemArray);

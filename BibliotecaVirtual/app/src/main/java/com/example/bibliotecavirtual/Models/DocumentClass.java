@@ -1,18 +1,19 @@
 package com.example.bibliotecavirtual.Models;
 
 public class DocumentClass {
-    public int id;
-    public String nombre;
-    public int contador;
-    public String fecha;
-    public String codTema;
-    public String codUsuario;
-    public String archivo;
+    public  String idDoc;
+    public  String nombre;
+    public  int contador;
+    public  String fecha;
+    public  String codTema;
+    public  String codUsuario;
+    public  String archivo;
 
     public DocumentClass(){}
 
-    public DocumentClass(int id, String nombre, int contador, String fecha, String codTema, String codUsuario, String archivo) {
-        this.id = id;
+    public DocumentClass( String idDoc, String nombre, int contador, String fecha, String codTema, String codUsuario, String archivo) {
+
+        this.idDoc = idDoc;
         this.nombre = nombre;
         this.contador = contador;
         this.fecha = fecha;
@@ -21,12 +22,12 @@ public class DocumentClass {
         this.archivo = archivo;
     }
 
-    public int getId() {
-        return id;
+    public String getIdDoc() {
+        return idDoc;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdDoc(String idDoc) {
+        this.idDoc = idDoc;
     }
 
     public String getNombre() {

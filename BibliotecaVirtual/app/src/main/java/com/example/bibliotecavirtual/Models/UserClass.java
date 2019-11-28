@@ -2,6 +2,7 @@ package com.example.bibliotecavirtual.Models;
 
 public class UserClass {
     public int id;
+    public String idUser;
     public String userName;
     public String correo;
     public String contraseña;
@@ -12,8 +13,9 @@ public class UserClass {
 
     public UserClass(){}
 
-    public UserClass(int id, String userName, String correo, String contraseña, String codUniversidad) {
+    public UserClass(int id, String idUser, String userName, String correo, String contraseña, String codUniversidad) {
         this.id = id;
+        this.idUser = idUser;
         this.userName = userName;
         this.correo = correo;
         this.contraseña = contraseña;
@@ -26,6 +28,14 @@ public class UserClass {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
     }
 
     public String getUserName() {

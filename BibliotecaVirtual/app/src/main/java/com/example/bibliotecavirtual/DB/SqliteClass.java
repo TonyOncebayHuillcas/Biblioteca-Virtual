@@ -35,6 +35,7 @@ public class SqliteClass {
         /*TABLE_APP_USER*/
         public static final String TABLE_APP_USER = "user";
         private static final String KEY_USEID = "id";
+        private static final String KEY_USEIDDOC = "idUser";
         private static final String KEY_USEUSE = "userName";
         private static final String KEY_USEEMA = "correo";
         private static final String KEY_USEPAS = "contraseña";
@@ -44,7 +45,8 @@ public class SqliteClass {
 
         /*TABLE_APP_ORDER*/
         private static final String TABLE_APP_DOCUMENT = "documentClass";
-        private static final String KEY_DOCID ="id";
+        //private static final String KEY_DOCID ="id";
+        private static final String KEY_DOCIDDOC ="idDoc";
         private static final String KEY_DOCNAM ="nombre";
         private static final String KEY_DOCCONT ="contador";
         private static final String KEY_DOCFECH ="fecha";
@@ -69,11 +71,11 @@ public class SqliteClass {
         public void onCreate(SQLiteDatabase db) {
             /*@TABLE_USER*/
             String CREATE_TABLE_USER = " CREATE TABLE " + TABLE_APP_USER + "("
-                    + KEY_USEID + " INTEGER PRIMARY KEY," + KEY_USEUSE + " TEXT,"+ KEY_USEEMA + " TEXT,"
+                    + KEY_USEID + " INTEGER PRIMARY KEY," +KEY_USEIDDOC + " TEXT," + KEY_USEUSE + " TEXT,"+ KEY_USEEMA + " TEXT,"
                     + KEY_USEPAS + " TEXT," + KEY_USECODUNI + " TEXT)";
             /*@TABLE_ORDER*/
             String CREATE_TABLE_DOCUMENT = " CREATE TABLE " + TABLE_APP_DOCUMENT + "("
-                    + KEY_DOCID + " INTEGER PRIMARY KEY," + KEY_DOCNAM + " TEXT," + KEY_DOCNAM + " TEXT," + KEY_DOCCONT + " TEXT," + KEY_DOCCONT + " TEXT,"
+                    + KEY_DOCIDDOC + " STRING PRIMARY KEY," +  KEY_DOCNAM + " TEXT," + KEY_DOCCONT + " TEXT,"
                     + KEY_DOCFECH + " TEXT," + KEY_DOCCODTEM + " TEXT," + KEY_DOCCODUSE + " TEXT," + KEY_DOCARC +" TEXT)";
 
             /*@EXECSQL_CREATE*/
@@ -128,6 +130,7 @@ public class SqliteClass {
                 SQLiteDatabase db = databasehelp.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(KEY_USEID, user.getId());
+                values.put(KEY_USEIDDOC, user.getIdUser());
                 values.put(KEY_USEUSE, user.getUserName());
                 values.put(KEY_USEEMA, user.getCorreo());
                 values.put(KEY_USEPAS, user.getContraseña());
@@ -146,7 +149,7 @@ public class SqliteClass {
 
             public boolean isRegisterUser(String sName, String sPassword) {
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
-                Cursor cursor = db.query(TABLE_APP_USER, new String[] { KEY_USEID , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
+                Cursor cursor = db.query(TABLE_APP_USER, new String[] { KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEUSE + "=?" + " and "+ KEY_USEPAS + "=?",
                         new String[] {sName, sPassword}, null, null, null, null);
                 if (cursor != null){
@@ -163,14 +166,14 @@ public class SqliteClass {
 
             public UserClass getUser (int id){
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
-                Cursor cursor =  db.query(TABLE_APP_USER, new String[] { KEY_USEID , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
+                Cursor cursor =  db.query(TABLE_APP_USER, new String[] { KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEID + "=?",
                         new String[] { String.valueOf(id) }, null, null, null, null);
                 if (cursor != null){
                     cursor.moveToFirst();
                 }
                 UserClass user = new UserClass(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getString(4));
+                        cursor.getString(3), cursor.getString(4),cursor.getString(5));
                 db.close();
                 return user;
             }
@@ -184,6 +187,7 @@ public class SqliteClass {
                     do {
                         UserClass user = new UserClass();
                         user.setId(cursor.getInt(cursor.getColumnIndex(KEY_USEID)));
+                        user.setIdUser(cursor.getString(cursor.getColumnIndex(KEY_USEIDDOC)));
                         user.setUserName(cursor.getString(cursor.getColumnIndex(KEY_USEUSE)));
                         user.setCorreo(cursor.getString(cursor.getColumnIndex(KEY_USEEMA)));
                         user.setContraseña(cursor.getString(cursor.getColumnIndex(KEY_USEPAS)));
@@ -198,7 +202,7 @@ public class SqliteClass {
             public int getId(String sName, String sPassword) {
                 int _id=0;
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
-                Cursor cursor = db.query(TABLE_APP_USER, new String[] { KEY_USEID , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
+                Cursor cursor = db.query(TABLE_APP_USER, new String[] { KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEUSE + "=?" + " and "+ KEY_USEPAS + "=?",
                         new String[] {sName, sPassword}, null, null, null, null);
                 if (cursor != null){
@@ -211,7 +215,7 @@ public class SqliteClass {
             public String getData(int nField, String sName) {
                 String _date = null;
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
-                Cursor cursor = db.query(TABLE_APP_USER, new String[] {KEY_USEID , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
+                Cursor cursor = db.query(TABLE_APP_USER, new String[] {KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEUSE + "=?",
                         new String[] {sName}, null, null, null, null);
                 if (cursor != null){
@@ -224,7 +228,7 @@ public class SqliteClass {
             public String getDate(String sName) {
                 String _date = null;
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
-                Cursor cursor = db.query(TABLE_APP_USER, new String[] {KEY_USEID , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
+                Cursor cursor = db.query(TABLE_APP_USER, new String[] {KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEUSE + "=?",
                         new String[] {sName}, null, null, null, null);
                 if (cursor != null){
@@ -248,7 +252,7 @@ public class SqliteClass {
             public void addDocument(DocumentClass documentClass){
                 SQLiteDatabase db = databasehelp.getWritableDatabase();
                 ContentValues values = new ContentValues();
-                values.put(KEY_DOCID,documentClass.getId());
+                values.put(KEY_DOCIDDOC,documentClass.getIdDoc());
                 values.put(KEY_DOCNAM,documentClass.getNombre());
                 values.put(KEY_DOCCONT,documentClass.getContador());
                 values.put(KEY_DOCFECH,documentClass.getFecha());
@@ -267,7 +271,8 @@ public class SqliteClass {
                 if (cursor.moveToFirst()){
                     do {
                         DocumentClass item = new DocumentClass();
-                        item.setId(cursor.getInt(cursor.getColumnIndex(KEY_DOCID)));
+                        //item.setId(cursor.getInt(cursor.getColumnIndex(KEY_DOCID)));
+                        item.setIdDoc(cursor.getString(cursor.getColumnIndex(KEY_DOCIDDOC)));
                         item.setNombre(cursor.getString(cursor.getColumnIndex(KEY_DOCNAM)));
                         item.setContador(cursor.getInt(cursor.getColumnIndex(KEY_DOCCONT)));
                         item.setFecha(cursor.getString(cursor.getColumnIndex(KEY_DOCFECH)));
@@ -283,13 +288,13 @@ public class SqliteClass {
             public DocumentClass getDocument (int nId){
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
                 Cursor cursor = db.query(TABLE_APP_DOCUMENT, new String[] {
-                                KEY_DOCID, KEY_DOCNAM, KEY_DOCCONT,KEY_DOCFECH,KEY_DOCCODTEM,KEY_DOCCODUSE
-                        ,KEY_DOCARC}, KEY_DOCID + "=?",
+                                KEY_DOCIDDOC, KEY_DOCNAM, KEY_DOCCONT,KEY_DOCFECH,KEY_DOCCODTEM,KEY_DOCCODUSE
+                        ,KEY_DOCARC}, KEY_DOCIDDOC + "=?",
                         new String[] { String.valueOf(nId) }, null, null, null, null);
                 if (cursor != null){
                     cursor.moveToFirst();
                 }
-                DocumentClass documentClass = new DocumentClass(cursor.getInt(0), cursor.getString(1), cursor.getInt(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
+                DocumentClass documentClass = new DocumentClass(cursor.getString(0), cursor.getString(1), cursor.getInt(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
                 db.close();
                 return documentClass;
             }
