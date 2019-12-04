@@ -85,7 +85,7 @@ public class SqliteClass {
 
             /*@TABLE_USERS*/
             String CREATE_TABLE_USERS = " CREATE TABLE " + TABLE_APP_USERS + "("
-                    + KEY_USERSIDDOC + " INTEGER PRIMARY KEY," +KEY_USERSUSE + " TEXT)";
+                    + KEY_USERSIDDOC + " STRING PRIMARY KEY," +KEY_USERSUSE + " TEXT)";
 
             /*@TABLE_DOCUMENT*/
             String CREATE_TABLE_DOCUMENT = " CREATE TABLE " + TABLE_APP_DOCUMENT + "("
@@ -256,7 +256,7 @@ public class SqliteClass {
             }
 
         }
-        /*@CLASS_ORDERSQL*/
+        /*@CLASS_DOCUMENTSQL*/
         public class AppDocumentSql{
             public AppDocumentSql(){ }
             public void deleteOrder(){
@@ -325,6 +325,19 @@ public class SqliteClass {
                 db.insert(TABLE_APP_USERS, null, values);
                 db.close();
             }
+
+            public String getNameUser(String idUser) {
+                String selectQuery = "SELECT userName FROM " + TABLE_APP_USERS + " WHERE idUser = '" + idUser + "'";
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                String nombre = "";
+                cursor.moveToFirst();
+                nombre=cursor.getString(0);
+                db.close();
+                return nombre;
+            }
+
+
             public ArrayList<UsersClass> getAllItem(){
                 ArrayList<UsersClass> usersClassList = new ArrayList<UsersClass>();
                 String selectQuery = "SELECT  * FROM " + TABLE_APP_USERS;

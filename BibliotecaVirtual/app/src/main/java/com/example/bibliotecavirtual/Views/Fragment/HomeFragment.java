@@ -62,16 +62,13 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         empty  = (TextView) layout.findViewById(android.R.id.empty);
         itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
         getList(itemList);
-        // Inflate the layout for this fragment
-        //if(itemList.size()>0){empty.setVisibility(layout.GONE);} else {empty.setVisibility(layout.VISIBLE);}
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
-                //DocumentClass.setIdDoc(String.valueOf(itemList.get(position).getId()));
                 ConstValue.setNombre(itemList.get(position).getNombre());
-                ConstValue.setCodUsuario(itemList.get(position).getCodUsuario());
+                ConstValue.setCodUsuario(SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(itemList.get(position).getCodUsuario()));
+                //ConstValue.setCodUsuario(itemList.get(position).getCodUsuario());
                 ConstValue.setCodTema(itemList.get(position).getCodTema());
                 ConstValue.setContador(itemList.get(position).getContador());
 
@@ -105,7 +102,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             HashMap<String, String> map = new HashMap<String, String>();
             //map.put("id", String.valueOf(cc.getId()));
             map.put("name_of_document",cc.getNombre());
-            map.put("author",cc.getCodUsuario());
+            //map.put("author",cc.getCodUsuario());
+            map.put("author",SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(cc.getCodUsuario()));
             map.put("thema",cc.getCodTema());
             map.put("cant_descargas",String.valueOf(cc.getContador()));
 

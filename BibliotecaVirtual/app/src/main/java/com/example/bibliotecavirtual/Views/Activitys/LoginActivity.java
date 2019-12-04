@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
         login = (Button) findViewById(R.id.button_login);
         sign = (Button) findViewById(R.id.button_sign_up);
+        username.setText("german");password.setText("1q2w3e");
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,15 +130,16 @@ public class LoginActivity extends AppCompatActivity {
                         loadDoc.add(documentClass);
                     }
 
+
                     JSONObject jsonusers = new JSONObject();
                     jsonArray = null;
                     jsonusers = protocol.getJson(ConstValue.URL_GET_USER);
-                    System.out.println("Usuaio " + jsonusers);
-                    JSONArray jsnArrayUser = jsondoc.getJSONArray("usuarios");
+                    System.out.println("Usuarios " + jsonusers);
+                    JSONArray jsnArrayUser = jsonusers.getJSONArray("usuarios");
                     loadUsers= new ArrayList<UsersClass>();
                     for(int j=0 ; j<jsnArrayUser.length() ; j++){
                         JSONObject js = jsnArrayUser.getJSONObject(j);
-                        usersClass=  new UsersClass(js.getString("id"),js.getString("userName"));
+                        usersClass=  new UsersClass(js.getString("_id"),js.getString("userName"));
                         SqliteClass.getInstance(getApplicationContext()).databasehelp.userssql.addUsers(usersClass);
 
                         loadUsers.add(usersClass);
