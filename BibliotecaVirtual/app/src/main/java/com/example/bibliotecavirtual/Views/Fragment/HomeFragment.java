@@ -67,9 +67,9 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 ConstValue.setNombre(itemList.get(position).getNombre());
-                ConstValue.setCodUsuario(SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(itemList.get(position).getCodUsuario()));
-                //ConstValue.setCodUsuario(itemList.get(position).getCodUsuario());
                 ConstValue.setCodTema(itemList.get(position).getCodTema());
+
+                ConstValue.setCodUsuario(SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(itemList.get(position).getCodUsuario()));
                 ConstValue.setContador(itemList.get(position).getContador());
 
 

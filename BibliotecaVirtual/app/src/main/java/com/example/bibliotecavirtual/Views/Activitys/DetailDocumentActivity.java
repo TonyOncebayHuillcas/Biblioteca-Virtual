@@ -61,7 +61,15 @@ public class DetailDocumentActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             Intent intent = new Intent(DetailDocumentActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(DetailDocumentActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }
