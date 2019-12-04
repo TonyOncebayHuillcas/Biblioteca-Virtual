@@ -2,11 +2,12 @@ package com.example.bibliotecavirtual.Models;
 
 public class TemaClass {
     public String idTema;
-    public String userName;
+    public String nombre;
 
-    public TemaClass(String idTema, String userName) {
+    public TemaClass(){}
+    public TemaClass(String idTema, String nombre) {
         this.idTema = idTema;
-        this.userName = userName;
+        this.nombre = nombre;
     }
 
     public String getIdTema() {
@@ -17,11 +18,11 @@ public class TemaClass {
         this.idTema = idTema;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

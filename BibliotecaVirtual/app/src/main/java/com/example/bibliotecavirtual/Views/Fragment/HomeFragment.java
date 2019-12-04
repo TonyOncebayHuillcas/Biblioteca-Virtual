@@ -102,9 +102,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             HashMap<String, String> map = new HashMap<String, String>();
             //map.put("id", String.valueOf(cc.getId()));
             map.put("name_of_document",cc.getNombre());
-            //map.put("author",cc.getCodUsuario());
             map.put("author",SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(cc.getCodUsuario()));
-            map.put("thema",cc.getCodTema());
+            map.put("thema",SqliteClass.getInstance(context).databasehelp.temasql.getNameTem(cc.getCodTema()));
             map.put("cant_descargas",String.valueOf(cc.getContador()));
 
             itemArray.add(map);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
 import com.example.bibliotecavirtual.Models.DocumentClass;
+import com.example.bibliotecavirtual.Models.TemaClass;
 import com.example.bibliotecavirtual.Models.UserClass;
 import com.example.bibliotecavirtual.Models.UsersClass;
 import com.example.bibliotecavirtual.R;
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
     ArrayList<UsersClass> loadUsers = null;
     UsersClass usersClass;
+
+    TemaClass temaClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                         loadDoc.add(documentClass);
                     }
 
-
+                    //tusuarios
                     JSONObject jsonusers = new JSONObject();
                     jsonArray = null;
                     jsonusers = protocol.getJson(ConstValue.URL_GET_USER);
@@ -143,6 +146,21 @@ public class LoginActivity extends AppCompatActivity {
                         SqliteClass.getInstance(getApplicationContext()).databasehelp.userssql.addUsers(usersClass);
 
                         loadUsers.add(usersClass);
+                    }
+
+                    //Temas
+                    JSONObject jsontemas = new JSONObject();
+                    jsonArray = null;
+                    jsontemas = protocol.getJson(ConstValue.URL_GET_TEMAS);
+                    System.out.println("Temas " + jsontemas);
+                    JSONArray jsnArrayTemas = jsontemas.getJSONArray("temas");
+
+                    for(int j=0 ; j<jsnArrayTemas.length() ; j++){
+                        JSONObject js = jsnArrayTemas.getJSONObject(j);
+                        temaClass = new TemaClass(js.getString("_id"),js.getString("nombre"));
+
+                        SqliteClass.getInstance(getApplicationContext()).databasehelp.temasql.addTemas(temaClass);
+
                     }
 
                 }else {

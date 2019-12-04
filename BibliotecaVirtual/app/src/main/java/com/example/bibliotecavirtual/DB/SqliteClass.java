@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.example.bibliotecavirtual.Models.DocumentClass;
+import com.example.bibliotecavirtual.Models.TemaClass;
 import com.example.bibliotecavirtual.Models.UserClass;
 import com.example.bibliotecavirtual.Models.UsersClass;
 
@@ -47,7 +48,10 @@ public class SqliteClass {
         private static final String KEY_USERSIDDOC = "idUser";
         private static final String KEY_USERSUSE = "userName";
 
-
+        /*TABLE_APP_UTEMA*/
+        public static final String TABLE_APP_TEMAS = "temas";
+        private static final String KEY_TEMCOD = "idTema";
+        private static final String KEY_TEMNAM = "nombre";
 
         /*TABLE_APP_DOCUMENT*/
         private static final String TABLE_APP_DOCUMENT = "documentClass";
@@ -65,6 +69,7 @@ public class SqliteClass {
         public AppUserSql usersql;
         public AppDocumentSql documentsql;
         public AppUsersSql userssql;
+        public AppTemaSql temasql;
 
         public Context context;
         public DatabaseHelper(Context context) {
@@ -72,6 +77,7 @@ public class SqliteClass {
             usersql = new AppUserSql();
             documentsql = new AppDocumentSql();
             userssql = new AppUsersSql();
+            temasql = new AppTemaSql();
 
             this.context = context;
         }
@@ -87,6 +93,10 @@ public class SqliteClass {
             String CREATE_TABLE_USERS = " CREATE TABLE " + TABLE_APP_USERS + "("
                     + KEY_USERSIDDOC + " STRING PRIMARY KEY," +KEY_USERSUSE + " TEXT)";
 
+            /*@TABLE_TEMAS*/
+            String CREATE_TABLE_TEMA = " CREATE TABLE " + TABLE_APP_TEMAS + "("
+                    + KEY_TEMCOD + " STRING PRIMARY KEY," +KEY_TEMNAM + " TEXT)";
+
             /*@TABLE_DOCUMENT*/
             String CREATE_TABLE_DOCUMENT = " CREATE TABLE " + TABLE_APP_DOCUMENT + "("
                     + KEY_DOCIDDOC + " STRING PRIMARY KEY," +  KEY_DOCNAM + " TEXT," + KEY_DOCCONT + " TEXT,"
@@ -96,6 +106,7 @@ public class SqliteClass {
             db.execSQL(CREATE_TABLE_USER);
             db.execSQL(CREATE_TABLE_DOCUMENT);
             db.execSQL(CREATE_TABLE_USERS);
+            db.execSQL(CREATE_TABLE_TEMA);
         }
 
         @Override
@@ -103,6 +114,7 @@ public class SqliteClass {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_USER);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_DOCUMENT);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_USERS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_TEMAS);
             onCreate(db);
         }
 
@@ -353,6 +365,28 @@ public class SqliteClass {
                 }
                 db.close();
                 return usersClassList;
+            }
+        }
+
+        /*@CLASS_TEMASSQL*/
+        public class AppTemaSql{
+            public void addTemas(TemaClass temaClass){
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(KEY_TEMCOD,temaClass.getIdTema());
+                values.put(KEY_TEMNAM,temaClass.getNombre());
+                db.insert(TABLE_APP_TEMAS, null, values);
+                db.close();
+            }
+            public String getNameTem(String idTem) {
+                String selectQuery = "SELECT nombre FROM " + TABLE_APP_TEMAS + " WHERE idTema = '" + idTem + "'";
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                String nombre = "";
+                cursor.moveToFirst();
+                nombre=cursor.getString(0);
+                db.close();
+                return nombre;
             }
         }
     }
