@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.bibliotecavirtual.Models.DocumentClass;
 import com.example.bibliotecavirtual.Models.UserClass;
+import com.example.bibliotecavirtual.Models.UsersClass;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,9 +42,14 @@ public class SqliteClass {
         private static final String KEY_USEPAS = "contraseña";
         private static final String KEY_USECODUNI = "codUniversidad";
 
+        /*TABLE_APP_USERS*/
+        public static final String TABLE_APP_USERS = "users";
+        private static final String KEY_USERSIDDOC = "idUser";
+        private static final String KEY_USERSUSE = "userName";
 
 
-        /*TABLE_APP_ORDER*/
+
+        /*TABLE_APP_DOCUMENT*/
         private static final String TABLE_APP_DOCUMENT = "documentClass";
         //private static final String KEY_DOCID ="id";
         private static final String KEY_DOCIDDOC ="idDoc";
@@ -58,12 +64,15 @@ public class SqliteClass {
         /*@SQL*/
         public AppUserSql usersql;
         public AppDocumentSql documentsql;
+        public AppUsersSql userssql;
 
         public Context context;
         public DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             usersql = new AppUserSql();
             documentsql = new AppDocumentSql();
+            userssql = new AppUsersSql();
+
             this.context = context;
         }
 
@@ -73,7 +82,12 @@ public class SqliteClass {
             String CREATE_TABLE_USER = " CREATE TABLE " + TABLE_APP_USER + "("
                     + KEY_USEID + " INTEGER PRIMARY KEY," +KEY_USEIDDOC + " TEXT," + KEY_USEUSE + " TEXT,"+ KEY_USEEMA + " TEXT,"
                     + KEY_USEPAS + " TEXT," + KEY_USECODUNI + " TEXT)";
-            /*@TABLE_ORDER*/
+
+            /*@TABLE_USERS*/
+            String CREATE_TABLE_USERS = " CREATE TABLE " + TABLE_APP_USERS + "("
+                    + KEY_USERSIDDOC + " INTEGER PRIMARY KEY," +KEY_USERSUSE + " TEXT)";
+
+            /*@TABLE_DOCUMENT*/
             String CREATE_TABLE_DOCUMENT = " CREATE TABLE " + TABLE_APP_DOCUMENT + "("
                     + KEY_DOCIDDOC + " STRING PRIMARY KEY," +  KEY_DOCNAM + " TEXT," + KEY_DOCCONT + " TEXT,"
                     + KEY_DOCFECH + " TEXT," + KEY_DOCCODTEM + " TEXT," + KEY_DOCCODUSE + " TEXT," + KEY_DOCARC +" TEXT)";
@@ -81,12 +95,14 @@ public class SqliteClass {
             /*@EXECSQL_CREATE*/
             db.execSQL(CREATE_TABLE_USER);
             db.execSQL(CREATE_TABLE_DOCUMENT);
+            db.execSQL(CREATE_TABLE_USERS);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_USER);
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_DOCUMENT);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_APP_USERS);
             onCreate(db);
         }
 
@@ -297,6 +313,33 @@ public class SqliteClass {
                 DocumentClass documentClass = new DocumentClass(cursor.getString(0), cursor.getString(1), cursor.getInt(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6));
                 db.close();
                 return documentClass;
+            }
+        }
+        /*@CLASS_USERSSQL*/
+        public class AppUsersSql{
+            public void addUsers(UsersClass usersClass){
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(KEY_USERSIDDOC,usersClass.getIdUser());
+                values.put(KEY_USERSUSE,usersClass.getUserName());
+                db.insert(TABLE_APP_USERS, null, values);
+                db.close();
+            }
+            public ArrayList<UsersClass> getAllItem(){
+                ArrayList<UsersClass> usersClassList = new ArrayList<UsersClass>();
+                String selectQuery = "SELECT  * FROM " + TABLE_APP_USERS;
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                if (cursor.moveToFirst()){
+                    do {
+                        UsersClass item = new UsersClass();
+                        item.setIdUser(cursor.getString(cursor.getColumnIndex(KEY_USERSIDDOC)));
+                        item.setUserName(cursor.getString(cursor.getColumnIndex(KEY_USERSUSE)));
+                        usersClassList.add(item);
+                    } while (cursor.moveToNext());
+                }
+                db.close();
+                return usersClassList;
             }
         }
     }

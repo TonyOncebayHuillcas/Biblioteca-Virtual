@@ -15,6 +15,7 @@ import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
 import com.example.bibliotecavirtual.Models.DocumentClass;
 import com.example.bibliotecavirtual.Models.UserClass;
+import com.example.bibliotecavirtual.Models.UsersClass;
 import com.example.bibliotecavirtual.R;
 import com.example.bibliotecavirtual.Utils.ConnectionDetector;
 import com.example.bibliotecavirtual.Utils.Protocol;
@@ -41,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<DocumentClass> loadDoc=null;
     DocumentClass documentClass;
     UserClass userClass;
+
+    ArrayList<UsersClass> loadUsers = null;
+    UsersClass usersClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,21 +118,30 @@ public class LoginActivity extends AppCompatActivity {
                     jsonArray = null;
                     jsondoc = protocol.getJson(ConstValue.URL_GET_DOCUMENTS);
                     System.out.println("Mis documentos: " + jsondoc);
-                    JSONArray jsnArray = jsondoc.getJSONArray("documentos");
+                    JSONArray jsnArrayDoc = jsondoc.getJSONArray("documentos");
 
                     loadDoc= new ArrayList<DocumentClass>();
-                    for(int j=0 ; j<jsnArray.length() ; j++){
-                        JSONObject js = jsnArray.getJSONObject(j);
-                        documentClass=  new DocumentClass(jsnArray.getJSONObject(j).getString("id"),jsnArray.getJSONObject(j).getString("nombre"),jsnArray.getJSONObject(j).getInt("contador"),jsnArray.getJSONObject(j).getString("fecha"),jsnArray.getJSONObject(j).getString("codTema"),jsnArray.getJSONObject(j).getString("codUsuario"),"");
+                    for(int j=0 ; j<jsnArrayDoc.length() ; j++){
+                        JSONObject js = jsnArrayDoc.getJSONObject(j);
+                        documentClass=  new DocumentClass(jsnArrayDoc.getJSONObject(j).getString("id"),jsnArrayDoc.getJSONObject(j).getString("nombre"),jsnArrayDoc.getJSONObject(j).getInt("contador"),jsnArrayDoc.getJSONObject(j).getString("fecha"),jsnArrayDoc.getJSONObject(j).getString("codTema"),jsnArrayDoc.getJSONObject(j).getString("codUsuario"),"");
                         SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.addDocument(documentClass);
-                        System.out.println("docu nombre "+documentClass.getNombre());
-                        System.out.println("docu class "+documentClass.getClass());
-                        System.out.println("docu contado "+documentClass.getContador());
-                        System.out.println("docu fecha "+documentClass.getFecha());
 
                         loadDoc.add(documentClass);
                     }
 
+                    JSONObject jsonusers = new JSONObject();
+                    jsonArray = null;
+                    jsonusers = protocol.getJson(ConstValue.URL_GET_USER);
+                    System.out.println("Usuaio " + jsonusers);
+                    JSONArray jsnArrayUser = jsondoc.getJSONArray("usuarios");
+                    loadUsers= new ArrayList<UsersClass>();
+                    for(int j=0 ; j<jsnArrayUser.length() ; j++){
+                        JSONObject js = jsnArrayUser.getJSONObject(j);
+                        usersClass=  new UsersClass(js.getString("id"),js.getString("userName"));
+                        SqliteClass.getInstance(getApplicationContext()).databasehelp.userssql.addUsers(usersClass);
+
+                        loadUsers.add(usersClass);
+                    }
 
                 }else {
                     Toast.makeText(getApplicationContext(),"Credenciales invalidad", Toast.LENGTH_SHORT).show();
