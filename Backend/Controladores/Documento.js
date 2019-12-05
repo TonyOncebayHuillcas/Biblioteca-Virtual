@@ -92,6 +92,7 @@ function insertDocumento(req,res){
 function retornarDocumento(req,res){
     //console.log('Entro aqui')
     //console.log('Aqui es: ', req.params.nombre)
+    
     //var nombre=''+req.params.nombre+'.pdf'
     let documentoId = req.params.idDocumento
 
