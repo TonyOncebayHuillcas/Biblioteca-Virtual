@@ -8,7 +8,7 @@ public class ConstValue {
     public static String URL_LOGIN = "https://easynote1.herokuapp.com/api/loginUser";
     public static String URL_GET_DOCUMENTS = "https://easynote1.herokuapp.com/api/documento";
     public static String URL_GET_USER = "https://easynote1.herokuapp.com/api/usuario";
-    public static String URL_GET_DOCUMENT_ID= "https://easynote1.herokuapp.com/api/documentoPDF/";
+    public static String URL_GET_DOCUMENT_ID= "https://easynote1.herokuapp.com/api/documentoPDF";
     public static String URL_GET_TEMAS= "https://easynote1.herokuapp.com/api/tema";
 
 

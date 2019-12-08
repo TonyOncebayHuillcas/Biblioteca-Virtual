@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     loadDoc= new ArrayList<DocumentClass>();
                     for(int j=0 ; j<jsnArrayDoc.length() ; j++){
                         JSONObject js = jsnArrayDoc.getJSONObject(j);
-                        documentClass=  new DocumentClass(jsnArrayDoc.getJSONObject(j).getString("id"),jsnArrayDoc.getJSONObject(j).getString("nombre"),jsnArrayDoc.getJSONObject(j).getInt("contador"),jsnArrayDoc.getJSONObject(j).getString("fecha"),jsnArrayDoc.getJSONObject(j).getString("codTema"),jsnArrayDoc.getJSONObject(j).getString("codUsuario"),"");
+                        documentClass=  new DocumentClass(jsnArrayDoc.getJSONObject(j).getString("id"),jsnArrayDoc.getJSONObject(j).getString("nombre"),jsnArrayDoc.getJSONObject(j).getInt("contador"),jsnArrayDoc.getJSONObject(j).getString("fecha"),jsnArrayDoc.getJSONObject(j).getString("codTema"),jsnArrayDoc.getJSONObject(j).getString("codUsuario"));
                         SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.addDocument(documentClass);
 
                         loadDoc.add(documentClass);

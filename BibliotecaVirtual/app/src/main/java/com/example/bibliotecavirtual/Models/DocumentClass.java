@@ -22,6 +22,17 @@ public class DocumentClass {
         this.archivo = archivo;
     }
 
+    public DocumentClass( String idDoc, String nombre, int contador, String fecha, String codTema, String codUsuario) {
+
+        this.idDoc = idDoc;
+        this.nombre = nombre;
+        this.contador = contador;
+        this.fecha = fecha;
+        this.codTema = codTema;
+        this.codUsuario = codUsuario;
+        this.archivo = archivo;
+    }
+
     public String getIdDoc() {
         return idDoc;
     }

@@ -313,7 +313,7 @@ public class SqliteClass {
                 db.close();
                 return orderClassList;
             }
-            public DocumentClass getDocument (int nId){
+            public DocumentClass getDocument (String nId){
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
                 Cursor cursor = db.query(TABLE_APP_DOCUMENT, new String[] {
                                 KEY_DOCIDDOC, KEY_DOCNAM, KEY_DOCCONT,KEY_DOCFECH,KEY_DOCCODTEM,KEY_DOCCODUSE
