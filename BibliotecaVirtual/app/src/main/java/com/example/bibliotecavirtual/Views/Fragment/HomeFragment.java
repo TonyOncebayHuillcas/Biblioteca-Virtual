@@ -103,10 +103,9 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/*");
-                startActivityForResult(Intent.createChooser(intent, "Choose File"), VALOR_RETORNO);
-
+                Intent intent = new Intent(context, NewDocumentActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
 
                 /*
 
@@ -115,78 +114,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
             }
         });
         return layout;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        String filepath=null;
-        String filename;
-        Context applicationContext = MainActivity.getContextOfApplication();
-        if (resultCode == MainActivity.RESULT_OK) {
-
-            if (resultCode == RESULT_OK) {
-                // Get the Uri of the selected file
-                Uri uri = data.getData();
-                String uriString = uri.toString();
-                File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
-                filepath =path;
-                System.out.println("direccón del path: "+ filepath);
-                String displayName = null;
-
-                if (uriString.startsWith("content://")) {
-                    Cursor cursor = null;
-                    try {
-                        cursor = applicationContext.getContentResolver().query(uri, null, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                            //String txtFilename.setText(displayName);
-                            filename = displayName;
-
-                            System.out.println("displayname: "+ displayName );
-                            System.out.println("filename: "+ filename );
-                            System.out.println("direccón: "+ Environment.getExternalStorageDirectory() );
-                            //Environment.getExternalStorageDirectory()
-
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                } else if (uriString.startsWith("file://")) {
-                    displayName = myFile.getName();
-                    //txtFilename.setText(displayName);
-                    filename = displayName;
-                    System.out.println("displayname: "+ displayName );
-                    System.out.println("filename: "+ filename );
-                    System.out.println("direccón: "+ Environment.getExternalStorageDirectory() );
-
-
-                }
-            }
-
-            Intent intent = new Intent(context, NewDocumentActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String getPDFPath(Uri uri) {
-        final String id = DocumentsContract.getDocumentId(uri);
-        final Uri contentUri = ContentUris.withAppendedId(
-                Uri.parse("/storage/emulated/0/Download/"), Long.valueOf(id));
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Context applicationContext = MainActivity.getContextOfApplication();
-        //applicationContext.getContentResolver();
-        Cursor cursor = applicationContext.getContentResolver().query(contentUri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-
     }
 
     public void getList(List<DocumentClass> list){
