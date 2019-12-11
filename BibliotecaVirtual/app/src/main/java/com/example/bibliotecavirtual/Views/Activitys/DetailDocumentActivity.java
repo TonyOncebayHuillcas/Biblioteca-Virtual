@@ -1,15 +1,20 @@
 package com.example.bibliotecavirtual.Views.Activitys;
 
+import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -101,9 +106,10 @@ public class DetailDocumentActivity extends AppCompatActivity {
         @TargetApi(Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Boolean... booleans) {
-            
+
+            // Here, thisActivity is the current activity
+
             JSONObject jsonDoc = new JSONObject();
-            JSONArray jsonArray = new JSONArray();
             String idDoc = ConstValue.getIdDoc();
 
             jsonDoc = protocol.getJson(ConstValue.URL_GET_DOCUMENTS+"/"+idDoc);
@@ -111,15 +117,13 @@ public class DetailDocumentActivity extends AppCompatActivity {
             try {
                 File file = new File("/storage/emulated/0/Download/"+ConstValue.getNombre()+".pdf");
                 FileOutputStream fos = new FileOutputStream(file);
-                //jsonArray = jsonDoc.getJSONArray("documento");
-                //JSONObject dc = jsonArray.getJSONObject(0);
                 JSONObject dc1 = jsonDoc.getJSONObject("documento");
                 System.out.println("archivo 64 " + dc1.getString("archivo"));
                 byte[] decoder = Base64.getDecoder().decode(dc1.getString("archivo"));
                 fos.write(decoder);
                 System.out.println("PDF File Saved");
                 Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
-                //String b64 = dc.getString("archivo");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (FileNotFoundException e) {

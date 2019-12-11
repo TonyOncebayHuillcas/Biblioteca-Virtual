@@ -10,16 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center"
-            android:text="Seleccionar Archivo"
-            android:textColor="@color/black"
-            android:textSize="34dp"/>
+
 
         <ImageView
             android:id="@+id/imageView4"
@@ -41,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Area:"
+                android:text="Nombre del documento: "
                 android:textColor="@color/black"
                 android:textSize="30dp"/>
 
@@ -51,7 +42,7 @@
                 android:textColorHint="@color/colorPrimaryDark">
 
                 <EditText
-                    android:id="@+id/et_area"
+                    android:id="@+id/et_documento_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionUnspecified"
@@ -79,26 +70,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Descripción"
+                android:text="Tema :"
                 android:textColor="@color/black"
                 android:textSize="30dp" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/colorPrimaryDark">
 
                 <EditText
-                    android:id="@+id/et_password"
+                    android:id="@+id/et_tema"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"/>
+                    android:textColorHint="@android:color/darker_gray" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>

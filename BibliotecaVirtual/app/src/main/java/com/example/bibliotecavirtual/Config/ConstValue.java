@@ -1,5 +1,7 @@
 package com.example.bibliotecavirtual.Config;
 
+import android.net.Uri;
+
 import com.example.bibliotecavirtual.Models.DocumentClass;
 
 public class ConstValue {
@@ -130,4 +132,24 @@ public class ConstValue {
         this.codUniversidad = codUniversidad;
     }
     //END USER
+
+    public static String uri;
+
+    public static String getUri() {
+        return uri;
+    }
+
+    public static void setUri(String uri) {
+        ConstValue.uri = uri;
+    }
+
+    public static Uri uri1;
+
+    public static Uri getUri1() {
+        return uri1;
+    }
+
+    public static void setUri1(Uri uri1) {
+        ConstValue.uri1 = uri1;
+    }
 }

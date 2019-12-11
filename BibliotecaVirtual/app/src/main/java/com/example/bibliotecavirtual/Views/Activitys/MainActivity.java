@@ -36,6 +36,8 @@ import com.example.bibliotecavirtual.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
     ActionBar actionBar;
     Context context;
@@ -49,6 +51,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     ArrayList<HashMap<String, Integer>> menuArray;
     ListView mListView;
     MenuAdapter mAdapter;
+    public static Context contextOfApplication;
+
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
+    }
 
     public SharedPreferences settings;
     //public ConnectionDetector cd;
@@ -62,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         context = this;
         activity=this;
         settings = getSharedPreferences(ConstValue.MAIN_PREF, 0);
+        contextOfApplication = getApplicationContext();
+
         //cd=new ConnectionDetector(this);
         actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
