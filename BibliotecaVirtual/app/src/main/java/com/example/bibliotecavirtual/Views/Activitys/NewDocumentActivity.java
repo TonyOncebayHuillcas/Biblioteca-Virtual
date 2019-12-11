@@ -40,7 +40,9 @@ public class NewDocumentActivity extends AppCompatActivity {
     EditText nombre, tema;
     Protocol protocol;
     int VALOR_RETORNO = 1;
-
+    public Uri selectedImage;
+    public String path;
+    private MenuItem item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class NewDocumentActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("*/*");
         startActivityForResult(Intent.createChooser(intent, "Choose File"), VALOR_RETORNO);
 
@@ -72,25 +74,18 @@ public class NewDocumentActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            Intent intent = new Intent(NewDocumentActivity.this,MainActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Context applicationContext = MainActivity.getContextOfApplication();
-        if (resultCode == RESULT_OK && null != data)
+        if (resultCode == RESULT_OK)
         {
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
+            path =  data.getData().getPath();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             System.out.println("URI : " + selectedImage);
             System.out.println("URI -path : " + selectedImage.getPath());
+            System.out.println("URI -getPath : " + path);
 
             Cursor cursor = applicationContext.getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
@@ -98,6 +93,8 @@ public class NewDocumentActivity extends AppCompatActivity {
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
+            File file =new File(String.valueOf(selectedImage));
+            File file1 =new File(String.valueOf(selectedImage.getPath()));
             cursor.close();
         }
 
@@ -116,6 +113,24 @@ public class NewDocumentActivity extends AppCompatActivity {
         return s;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            Intent intent = new Intent(NewDocumentActivity.this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(NewDocumentActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
+    }
+
     class subirTask extends AsyncTask<Boolean, Void, String> {
 
         @Override
@@ -129,12 +144,13 @@ public class NewDocumentActivity extends AppCompatActivity {
 
 //            String filePath = ConstValue.getUri().toString();
   //          File file = new File(ConstValue.getUri().toString());
-            File originalFile = new File("/content:/com.mi.android.globalFileexplorer.myprovider/external_files/Download/Informe.pdf");
+           // File originalFile = new File(path);
             String encodedBase64 = null;
             try {
-                FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
-                byte[] bytes = new byte[(int)originalFile.length()];
-                fileInputStreamReader.read(bytes);
+                //FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
+                FileInputStream inputStream = (FileInputStream) getContentResolver().openInputStream(selectedImage);
+                byte[] bytes = new byte[1000000];
+                inputStream.read(bytes);
                 encodedBase64 = new String(Base64.getEncoder().encode(bytes));
                 System.out.println("documento en base 64: " + encodedBase64);
             } catch (FileNotFoundException e) {
