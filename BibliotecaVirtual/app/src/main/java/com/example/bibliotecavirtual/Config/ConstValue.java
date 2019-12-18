@@ -15,9 +15,12 @@ public class ConstValue {
 
 
     public static String response;
-
     public static String getResponse() { return response; }
     public static void setResponse(String response) { ConstValue.response = response; }
+
+    public static String existUser;
+    public static String getExistUser() { return existUser; }
+    public static void setExistUser(String existUser) { ConstValue.existUser = existUser; }
 
     //Document
     public static String idDoc;

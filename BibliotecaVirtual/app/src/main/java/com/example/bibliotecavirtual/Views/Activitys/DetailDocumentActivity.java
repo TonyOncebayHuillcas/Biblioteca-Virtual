@@ -122,7 +122,13 @@ public class DetailDocumentActivity extends AppCompatActivity {
                 byte[] decoder = Base64.getDecoder().decode(dc1.getString("archivo"));
                 fos.write(decoder);
                 System.out.println("PDF File Saved");
-                Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
+
+                int cont = SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id"));
+                System.out.println("Contador :"+cont);
+                SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.updateContador(dc1.getString("contador"),cont);
+
+                System.out.println("Contador Nuevo :"+SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id")));
+                //Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();

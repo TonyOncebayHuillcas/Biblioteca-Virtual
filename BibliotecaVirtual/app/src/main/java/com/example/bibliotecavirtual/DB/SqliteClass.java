@@ -42,6 +42,7 @@ public class SqliteClass {
         private static final String KEY_USEEMA = "correo";
         private static final String KEY_USEPAS = "contraseña";
         private static final String KEY_USECODUNI = "codUniversidad";
+        private static final String KEY_USEACT = "active";
 
         /*TABLE_APP_USERS*/
         public static final String TABLE_APP_USERS = "users";
@@ -87,7 +88,7 @@ public class SqliteClass {
             /*@TABLE_USER*/
             String CREATE_TABLE_USER = " CREATE TABLE " + TABLE_APP_USER + "("
                     + KEY_USEID + " INTEGER PRIMARY KEY," +KEY_USEIDDOC + " TEXT," + KEY_USEUSE + " TEXT,"+ KEY_USEEMA + " TEXT,"
-                    + KEY_USEPAS + " TEXT," + KEY_USECODUNI + " TEXT)";
+                    + KEY_USEPAS + " TEXT," + KEY_USECODUNI + " TEXT," + KEY_USEACT + " TEXT)";
 
             /*@TABLE_USERS*/
             String CREATE_TABLE_USERS = " CREATE TABLE " + TABLE_APP_USERS + "("
@@ -136,20 +137,20 @@ public class SqliteClass {
                 db.close();
             }
 
-            public String getActive(String pid) {
+            public String getActive() {
                 String result = "";
                 SQLiteDatabase db = databasehelp.getWritableDatabase();
-                Cursor mCount= db.rawQuery("SELECT active FROM " + TABLE_APP_USER + " WHERE id = '" + pid + "'",null);
+                Cursor mCount= db.rawQuery("SELECT active FROM " + TABLE_APP_USER ,null);
                 mCount.moveToFirst();
                 result= mCount.getString(0);
                 db.close();
                 return result;
             }
 
-            public void updateActive(String pid, String value) {
+            public void updateActive(String pid) {
                 SQLiteDatabase db = databasehelp.getWritableDatabase();
                 ContentValues values = new ContentValues();
-                values.put("active", value);
+                values.put("active", "0");
                 db.update(TABLE_APP_USER, values, KEY_USEID + " = ?",new String[] { pid });
                 db.close();
             }
@@ -163,6 +164,7 @@ public class SqliteClass {
                 values.put(KEY_USEEMA, user.getCorreo());
                 values.put(KEY_USEPAS, user.getContraseña());
                 values.put(KEY_USECODUNI, user.getCodUniversidad());
+                values.put(KEY_USEACT, "1");
                 db.insert(TABLE_APP_USER, null, values);
                 db.close();
             }
@@ -227,8 +229,8 @@ public class SqliteClass {
                 return userList;
             }
 
-            public int getId(String sName, String sPassword) {
-                int _id=0;
+            public String getId(String sName, String sPassword) {
+                String _id;
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
                 Cursor cursor = db.query(TABLE_APP_USER, new String[] { KEY_USEID,KEY_USEIDDOC , KEY_USEUSE, KEY_USEEMA, KEY_USEPAS
                                 ,KEY_USECODUNI}, KEY_USEUSE + "=?" + " and "+ KEY_USEPAS + "=?",
@@ -236,10 +238,24 @@ public class SqliteClass {
                 if (cursor != null){
                     cursor.moveToFirst();
                 }
-                _id = cursor.getInt(0);
+                _id = cursor.getString(0);
                 db.close();
                 return _id;
             }
+
+
+            public String getID() {
+                String selectQuery = "SELECT idUser FROM " + TABLE_APP_USER ;
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                String nombre = "";
+                cursor.moveToFirst();
+                nombre=cursor.getString(0);
+                db.close();
+                return nombre;
+            }
+
+
             public String getData(int nField, String sName) {
                 String _date = null;
                 SQLiteDatabase db = databasehelp.getReadableDatabase();
@@ -289,6 +305,26 @@ public class SqliteClass {
                 values.put(KEY_DOCARC,documentClass.getArchivo());
                 db.insert(TABLE_APP_DOCUMENT, null, values);
                 db.close();
+            }
+
+            public void updateContador(String idDoc, int cont){
+                cont= cont+1;
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(KEY_DOCCONT, cont);
+                db.update(TABLE_APP_DOCUMENT, values, KEY_DOCIDDOC + " = ?",new String[] { idDoc});
+                db.close();
+            }
+
+            public int getContador(String idDoc) {
+                String selectQuery = "SELECT contador FROM " + TABLE_APP_DOCUMENT + " WHERE idDoc = '" + idDoc + "'";
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                int nombre ;
+                cursor.moveToFirst();
+                nombre=cursor.getInt(0);
+                db.close();
+                return nombre;
             }
 
             public ArrayList<DocumentClass> getAllItem(){
@@ -388,6 +424,34 @@ public class SqliteClass {
                 db.close();
                 return nombre;
             }
+            public String getIdTema(String nombre) {
+                String selectQuery = "SELECT idTema FROM " + TABLE_APP_TEMAS + " WHERE nombre = '" + nombre + "'";
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                String rpta = "";
+                cursor.moveToFirst();
+                rpta=cursor.getString(0);
+                db.close();
+                return rpta;
+            }
+            public ArrayList<TemaClass> getAllItem(){
+                ArrayList<TemaClass> orderClassList = new ArrayList<TemaClass>();
+                String selectQuery = "SELECT  * FROM " + TABLE_APP_TEMAS;
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                if (cursor.moveToFirst()){
+                    do {
+                        TemaClass item = new TemaClass();
+                        //item.setId(cursor.getInt(cursor.getColumnIndex(KEY_DOCID)));
+                        item.setIdTema(cursor.getString(cursor.getColumnIndex(KEY_TEMCOD)));
+                        item.setNombre(cursor.getString(cursor.getColumnIndex(KEY_TEMNAM)));
+                        orderClassList.add(item);
+                    } while (cursor.moveToNext());
+                }
+                db.close();
+                return orderClassList;
+            }
+
         }
     }
 

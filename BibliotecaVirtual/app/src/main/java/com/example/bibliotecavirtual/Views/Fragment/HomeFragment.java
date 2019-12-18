@@ -89,7 +89,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 ConstValue.setCodTema(itemList.get(position).getCodTema());
                 ConstValue.setIdDoc(itemList.get(position).getIdDoc());
                 ConstValue.setCodUsuario(SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(itemList.get(position).getCodUsuario()));
-                ConstValue.setContador(itemList.get(position).getContador());
+                //ConstValue.setContador(itemList.get(position).getContador());
+                ConstValue.setContador(SqliteClass.getInstance(context).databasehelp.documentsql.getContador(itemList.get(position).getIdDoc()));
 
 
                 Intent intent = new Intent(context, DetailDocumentActivity.class);
@@ -107,10 +108,6 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
 
-                /*
-
-                */
-                //finish();
             }
         });
         return layout;

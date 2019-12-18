@@ -1,5 +1,6 @@
 package com.example.bibliotecavirtual.Views.Activitys;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,36 +14,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.bibliotecavirtual.Config.ConstValue;
+import com.example.bibliotecavirtual.DB.SqliteClass;
+import com.example.bibliotecavirtual.Models.TemaClass;
 import com.example.bibliotecavirtual.R;
 import com.example.bibliotecavirtual.Utils.Protocol;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 //import org.apache.commons.codec.binary.Base64;
 
 public class NewDocumentActivity extends AppCompatActivity {
     ActionBar actionBar;
     Button subir, cancelar;
-    EditText nombre, tema;
+    EditText nombre;
+    Spinner tema;
+    ArrayList<TemaClass> temaClassArrayList = new ArrayList<TemaClass>();
+    String idTema;
     Protocol protocol;
     int VALOR_RETORNO = 1;
-    public Uri selectedImage;
-    public String path;
-    private MenuItem item;
+    public Uri selectedPDF;
+    ProgressDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +74,27 @@ public class NewDocumentActivity extends AppCompatActivity {
         protocol= new Protocol();
 
         nombre = (EditText) findViewById(R.id.et_documento_name);
-        tema= (EditText) findViewById(R.id.et_tema);
+
+        tema = (Spinner) findViewById(R.id.spnr_temas);
+        temaClassArrayList = SqliteClass.getInstance(getApplicationContext()).databasehelp.temasql.getAllItem();
+        ArrayAdapter<TemaClass> adapter =
+                new ArrayAdapter<TemaClass>(getApplicationContext(),  android.R.layout.simple_spinner_dropdown_item, temaClassArrayList);
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+
+        tema.setAdapter(adapter);
+
+        tema.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                idTema=SqliteClass.getInstance(getApplicationContext()).databasehelp.temasql.getIdTema((parent.getItemAtPosition(position)).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         subir = (Button) findViewById(R.id.button_share);
         subir.setOnClickListener(new View.OnClickListener() {
@@ -80,37 +110,19 @@ public class NewDocumentActivity extends AppCompatActivity {
         Context applicationContext = MainActivity.getContextOfApplication();
         if (resultCode == RESULT_OK)
         {
-            selectedImage = data.getData();
-            path =  data.getData().getPath();
+            selectedPDF = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
-            System.out.println("URI : " + selectedImage);
-            System.out.println("URI -path : " + selectedImage.getPath());
-            System.out.println("URI -getPath : " + path);
+            System.out.println("URI : " + selectedPDF);
 
-            Cursor cursor = applicationContext.getContentResolver().query(selectedImage,
+            Cursor cursor = applicationContext.getContentResolver().query(selectedPDF,
                     filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            File file =new File(String.valueOf(selectedImage));
-            File file1 =new File(String.valueOf(selectedImage.getPath()));
             cursor.close();
         }
 
 
-    }
-
-    public String getPath(Uri uri)
-    {
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
-        int column_index =             cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String s=cursor.getString(column_index);
-        cursor.close();
-        return s;
     }
 
     @Override
@@ -135,27 +147,45 @@ public class NewDocumentActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            dialog = ProgressDialog.show(NewDocumentActivity.this, "", "Subiendo", true);
             super.onPreExecute();
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected String doInBackground(Boolean... booleans) {
-
-//            String filePath = ConstValue.getUri().toString();
-  //          File file = new File(ConstValue.getUri().toString());
-           // File originalFile = new File(path);
             String encodedBase64 = null;
+            String responseString = null;
+            String name_ = nombre.getText().toString();
+            JSONObject response=null;
+
             try {
-                //FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
-                FileInputStream inputStream = (FileInputStream) getContentResolver().openInputStream(selectedImage);
+                FileInputStream inputStream = (FileInputStream) getContentResolver().openInputStream(selectedPDF);
                 byte[] bytes = new byte[1000000];
                 inputStream.read(bytes);
                 encodedBase64 = new String(Base64.getEncoder().encode(bytes));
-                System.out.println("documento en base 64: " + encodedBase64);
+                System.out.println("documento en base 64: " + new String(Base64.getEncoder().encode(bytes)));
+
+                JSONObject jsonDocument = new JSONObject();
+                LocalDateTime locaDate = LocalDateTime.now();
+                Date fecha = new Date();
+                String date= fecha.getDay()+"/"+fecha.getMonth()+"/"+fecha.getYear();
+                jsonDocument.put("nombre",nombre.getText().toString());
+                jsonDocument.put("contador",0);
+                jsonDocument.put("fecha",date);
+                jsonDocument.put("codUsuario", SqliteClass.getInstance(getApplicationContext()).databasehelp.usersql.getID());
+                jsonDocument.put("codTema",idTema);
+                jsonDocument.put("codigoBase64Redu",new String(Base64.getEncoder().encode(bytes)));
+
+                response = protocol.postJson(ConstValue.URL_GET_DOCUMENTS,responseString,jsonDocument);
+                Toast.makeText(getApplicationContext(), "Archivo Subido con exito", Toast.LENGTH_SHORT).show();
+
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -165,6 +195,7 @@ public class NewDocumentActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+            dialog.dismiss();
         }
     }
 }

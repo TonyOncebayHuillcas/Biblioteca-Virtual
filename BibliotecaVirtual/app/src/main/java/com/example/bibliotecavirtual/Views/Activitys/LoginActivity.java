@@ -1,7 +1,9 @@
 package com.example.bibliotecavirtual.Views.Activitys;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.invoke.ConstantCallSite;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -43,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     ArrayList<DocumentClass> loadDoc=null;
     DocumentClass documentClass;
     UserClass userClass;
+    public boolean session= false;
 
     ArrayList<UsersClass> loadUsers = null;
     UsersClass usersClass;
@@ -56,6 +60,15 @@ public class LoginActivity extends AppCompatActivity {
         cn= new ConnectionDetector(this);
         protocol = new Protocol();
 
+        SharedPreferences sharedPref = getSharedPreferences("login_preferences",Context.MODE_PRIVATE);
+        String active=sharedPref.getString("logueado","inactive");
+        if(active.equals("active")){
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        }
+
         username = (EditText) findViewById(R.id.et_username);
         password = (EditText) findViewById(R.id.et_password);
 
@@ -67,7 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(cn.isConnectingToInternet()){
-                    new loginTask().execute(true);
+                    if(username.getText().length()==0 || password.getText().length()==0){
+                        Toast.makeText(getApplicationContext(),"Easy Note - Tiene que ingresar un usuario y una contraseña",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        new loginTask().execute(true);
+                    }
                 }else {
                     Toast.makeText(getApplicationContext(),"Easy Note - Su dispositivo no cuenta con conexión a internet.",Toast.LENGTH_SHORT).show();
                 }
@@ -107,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("MI JSON EVENT: " + response);
 
                 if (response.getString("estado").equalsIgnoreCase("ok")) {
+                    ConstValue.setExistUser("ok");
                     System.out.println("Adentro ");
 
                     JSONObject json = new JSONObject();
@@ -164,7 +183,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 }else {
-                    Toast.makeText(getApplicationContext(),"Credenciales invalidad", Toast.LENGTH_SHORT).show();
+                    if (response.getString("estado").equalsIgnoreCase("error")){
+                        ConstValue.setExistUser("error");
+                        System.out.println("Error");
+                    }
+
                 }
 
 
@@ -181,11 +204,18 @@ public class LoginActivity extends AppCompatActivity {
             if (result != null) {
                 Toast.makeText(getApplicationContext(), "Easy Note " + result, Toast.LENGTH_LONG).show();
             } else {
-                if (ConstValue.getResponse().equals("200")) {
+                if (ConstValue.getResponse().equals("200") && ConstValue.getExistUser().equals("ok")) {
+                    SharedPreferences sharedPref = getSharedPreferences("login_preferences",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("logueado", "active");
+                    editor.apply();
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),"Easy Note - Datos incorrectos ingrese un usario registrdo o registre uno nuevo",Toast.LENGTH_SHORT).show();
                 }
             }
             // TODO Auto-generated method stub

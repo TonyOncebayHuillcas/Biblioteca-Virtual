@@ -244,11 +244,18 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 dialogButtonOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        SharedPreferences sharedPref = getSharedPreferences("login_preferences",Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putString("logueado", "inactive");
+                        editor.apply();
+
                         Intent login=new Intent(context, LoginActivity.class);
                         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        //activity.startActivity(login);
                         dialog.dismiss();
                         startActivity(login);
+
+
                         activity.finish();
                     }
                 });
