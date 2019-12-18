@@ -79,6 +79,9 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         itemArray = new ArrayList<HashMap<String,String>>();
         itemListView = (ListView) layout.findViewById(R.id.list_documents);
         empty  = (TextView) layout.findViewById(android.R.id.empty);
+
+
+
         itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
         getList(itemList);
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

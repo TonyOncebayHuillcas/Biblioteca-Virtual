@@ -12,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -33,7 +34,6 @@ public class Protocol {
             httpURLConnection.connect();
 
             DataOutputStream os = new DataOutputStream(httpURLConnection.getOutputStream());
-            //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8")); tl ony pe
             os.writeBytes(postData.toString());
             os.flush();
 
@@ -106,6 +106,56 @@ public class Protocol {
         }
 
         return jsonResult;
+
+    }
+
+    public void putJson(String url,JSONObject putData) {
+        BufferedReader reader = null;
+        JSONObject objReturn = new JSONObject();
+        HttpURLConnection httpURLConnection =null;
+        try {
+            httpURLConnection = (HttpURLConnection) new URL(url).openConnection();
+            httpURLConnection.setRequestMethod("PUT");
+            httpURLConnection.setRequestProperty("Content-Type", "application/json");
+            httpURLConnection.setRequestProperty("Accept","application/json");
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+
+            httpURLConnection.connect();
+
+            DataOutputStream os = new DataOutputStream(httpURLConnection.getOutputStream());
+            os.writeBytes(putData.toString());
+            os.flush();
+
+            InputStream stream = httpURLConnection.getInputStream();
+
+            reader = new BufferedReader(new InputStreamReader(stream));
+
+            StringBuffer buffer = new StringBuffer();
+            String line = "";
+
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line+"\n");
+                Log.d("Response: ", "> " + line);
+
+            }
+
+            os.close();
+            stream.close();
+            String json = buffer.toString();
+            objReturn = new JSONObject(json);
+
+            ConstValue.setResponse(String.valueOf(httpURLConnection.getResponseCode()));
+
+            Log.i("STATUS", String.valueOf(httpURLConnection.getResponseCode()));
+            Log.i("MSG" , httpURLConnection.getResponseMessage());
+
+            httpURLConnection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 }

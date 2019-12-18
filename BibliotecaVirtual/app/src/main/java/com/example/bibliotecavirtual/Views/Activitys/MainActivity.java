@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
+import com.example.bibliotecavirtual.DB.SqliteClass;
 import com.example.bibliotecavirtual.Views.Fragment.HomeFragment;
 
 import com.example.bibliotecavirtual.Views.Fragment.ProfileFragment;
@@ -249,6 +250,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putString("logueado", "inactive");
                         editor.apply();
+
+                        SqliteClass.getInstance(getApplicationContext()).databasehelp.deleteDataBase();
 
                         Intent login=new Intent(context, LoginActivity.class);
                         login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

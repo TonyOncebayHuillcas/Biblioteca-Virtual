@@ -107,7 +107,6 @@ public class DetailDocumentActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Boolean... booleans) {
 
-            // Here, thisActivity is the current activity
 
             JSONObject jsonDoc = new JSONObject();
             String idDoc = ConstValue.getIdDoc();
@@ -121,6 +120,9 @@ public class DetailDocumentActivity extends AppCompatActivity {
                 System.out.println("archivo 64 " + dc1.getString("archivo"));
                 byte[] decoder = Base64.getDecoder().decode(dc1.getString("archivo"));
                 fos.write(decoder);
+                JSONObject putJson = new JSONObject();
+                putJson.put("contador",2);
+                protocol.putJson(ConstValue.URL_UPDATE_DOCUMET+"/"+idDoc,putJson);
                 System.out.println("PDF File Saved");
 
                 int cont = SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id"));
@@ -128,7 +130,7 @@ public class DetailDocumentActivity extends AppCompatActivity {
                 SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.updateContador(dc1.getString("contador"),cont);
 
                 System.out.println("Contador Nuevo :"+SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id")));
-                //Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
+                //
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,6 +158,7 @@ public class DetailDocumentActivity extends AppCompatActivity {
             }
             */
             // TODO Auto-generated method stub
+            Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         }
     }
