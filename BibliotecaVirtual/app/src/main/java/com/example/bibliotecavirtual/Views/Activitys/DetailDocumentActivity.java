@@ -121,12 +121,14 @@ public class DetailDocumentActivity extends AppCompatActivity {
                 byte[] decoder = Base64.getDecoder().decode(dc1.getString("archivo"));
                 fos.write(decoder);
                 JSONObject putJson = new JSONObject();
-                putJson.put("contador",2);
+                int cont = SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id"));
+
+                putJson.put("contador",cont+1);
                 protocol.putJson(ConstValue.URL_UPDATE_DOCUMET+"/"+idDoc,putJson);
                 System.out.println("PDF File Saved");
 
-                int cont = SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id"));
                 System.out.println("Contador :"+cont);
+                cont=cont++;
                 SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.updateContador(dc1.getString("contador"),cont);
 
                 System.out.println("Contador Nuevo :"+SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.getContador(dc1.getString("_id")));
@@ -145,21 +147,22 @@ public class DetailDocumentActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            /*
+
             if (result != null) {
                 Toast.makeText(getApplicationContext(), "Easy Note " + result, Toast.LENGTH_LONG).show();
             } else {
                 if (ConstValue.getResponse().equals("200")) {
+                    Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                     Intent intent = new Intent(DetailDocumentActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     finish();
                 }
             }
-            */
+
             // TODO Auto-generated method stub
-            Toast.makeText(getApplicationContext(), "Archivo Descargado con exito", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+
         }
     }
 

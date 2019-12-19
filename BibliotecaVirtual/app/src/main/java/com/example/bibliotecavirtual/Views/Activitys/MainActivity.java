@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -25,18 +26,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.bibliotecavirtual.Adapters.DocumentAdapter;
 import com.example.bibliotecavirtual.Adapters.MenuAdapter;
 import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
+import com.example.bibliotecavirtual.Models.DocumentClass;
+import com.example.bibliotecavirtual.Utils.Protocol;
 import com.example.bibliotecavirtual.Views.Fragment.HomeFragment;
 
 import com.example.bibliotecavirtual.Views.Fragment.ProfileFragment;
 import com.example.bibliotecavirtual.Views.Fragment.ScoreFragment;
 import com.example.bibliotecavirtual.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    Protocol protocol;
+    DocumentClass documentClass;
 
     ArrayList<HashMap<String, Integer>> menuArray;
     ListView mListView;
@@ -83,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         //actionBar.setCustomView(v);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        protocol = new Protocol();
+        documentClass = new DocumentClass();
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -181,10 +194,46 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        // Handle your other action bar items...
+        int id = item.getItemId();
+        if (id==R.id.action_sync){
+            List<DocumentClass> itemList;
+            ArrayList<HashMap<String, String>> itemArray;
+            DocumentAdapter adapter;
+            ListView itemListView;
+            itemListView = (ListView) findViewById(R.id.list_documents);
+
+            itemArray = new ArrayList<HashMap<String,String>>();
+            itemList = new ArrayList<DocumentClass>();
+            itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
+
+            for(int z=0; z < itemList.size(); z++){
+                DocumentClass cc = itemList.get(z);
+                HashMap<String, String> map = new HashMap<String, String>();
+                //map.put("id", String.valueOf(cc.getId()));
+                map.put("name_of_document",cc.getNombre());
+                map.put("author",SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(cc.getCodUsuario()));
+                map.put("thema",SqliteClass.getInstance(context).databasehelp.temasql.getNameTem(cc.getCodTema()));
+                map.put("cant_descargas",String.valueOf(cc.getContador()));
+
+                itemArray.add(map);
+            }
+            adapter = new DocumentAdapter(activity, itemArray);
+            itemListView.setAdapter(adapter);
+        }
 
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -297,24 +346,49 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     @Override
     public void onBackPressed() {
-        //Util.logout(MainActivity.this, this);
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.alert_logout);
+        TextView head = (TextView) dialog.findViewById(R.id.alert_logout_title);
+        head.setText("Easy Note");
+        TextView content = (TextView) dialog.findViewById(R.id.alert_logout_content);
+        content.setText("Está seguro de cerrar sesión?");
 
-        /*
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getString(R.string.logout_message))
-                .setCancelable(false)
-                .setPositiveButton("SI", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        MainActivity.this.finish();
-                    }
-                })
-                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
-*/
+        Button dialogButtonOk = (Button) dialog.findViewById(R.id.alert_ok);
+        dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences sharedPref = getSharedPreferences("login_preferences",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("logueado", "inactive");
+                editor.apply();
+
+                SqliteClass.getInstance(getApplicationContext()).databasehelp.deleteDataBase();
+
+                Intent login=new Intent(context, LoginActivity.class);
+                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                dialog.dismiss();
+                startActivity(login);
+
+
+                activity.finish();
+            }
+        });
+        Button dialogButtonCancel = (Button) dialog.findViewById(R.id.alert_cancel);
+        dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void syncDocument(){
+        SqliteClass.getInstance(getApplicationContext()).databasehelp.documentsql.addDocument(documentClass);
+
+
+
     }
 }

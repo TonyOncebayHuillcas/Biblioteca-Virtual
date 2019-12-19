@@ -137,6 +137,12 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_home, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -168,8 +174,8 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     public void resetSearch() {
-        //itemList = SqliteClass.getInstance(context).databasehelp.ordersql.getAllItem();
-        //getList(itemList);
+        itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
+        getList(itemList);
     }
 
 

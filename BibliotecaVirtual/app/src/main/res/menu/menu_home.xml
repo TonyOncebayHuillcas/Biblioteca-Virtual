@@ -9,12 +9,13 @@
         myapp:showAsAction="always"
         myapp:actionViewClass="android.widget.SearchView"
         android:title="Search" />
+    <!--
     <item
         android:id="@+id/action_sync"
         android:orderInCategory="100"
         android:title="Tomar Foto"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sync"/>
-
+-->
 
 </menu>
