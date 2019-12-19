@@ -2,12 +2,15 @@ package com.example.bibliotecavirtual.Views.Fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
@@ -31,6 +34,11 @@ import android.widget.TextView;
 
 import com.example.bibliotecavirtual.Config.ConstValue;
 import com.example.bibliotecavirtual.DB.SqliteClass;
+import com.example.bibliotecavirtual.Models.TemaClass;
+import com.example.bibliotecavirtual.Models.UserClass;
+import com.example.bibliotecavirtual.Models.UsersClass;
+import com.example.bibliotecavirtual.Utils.Protocol;
+import com.example.bibliotecavirtual.Utils.Util;
 import com.example.bibliotecavirtual.Views.Activitys.DetailDocumentActivity;
 import com.example.bibliotecavirtual.Adapters.DocumentAdapter;
 import com.example.bibliotecavirtual.Models.DocumentClass;
@@ -39,6 +47,10 @@ import com.example.bibliotecavirtual.Views.Activitys.MainActivity;
 import com.example.bibliotecavirtual.Views.Activitys.NewDocumentActivity;
 import com.example.bibliotecavirtual.R;
 import com.example.bibliotecavirtual.Views.Activitys.RegisterActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,10 +69,16 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     ListView itemListView;
     TextView empty;
     Activity activity;
+    ProgressDialog dialog;
     Context context;
     FloatingActionButton DocEvent;
     int cnt;
     int VALOR_RETORNO = 1;
+    Protocol protocol;
+    UsersClass usersClass;
+    TemaClass temaClass;
+    DocumentClass documentClass;
+    UserClass userClass;
 
     public HomeFragment(){}
     public static HomeFragment newInstance(String param1, String param2) {
@@ -80,9 +98,10 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         itemListView = (ListView) layout.findViewById(R.id.list_documents);
         empty  = (TextView) layout.findViewById(android.R.id.empty);
 
-
+        //dialog= new ProgressDialog();
 
         itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
+
         getList(itemList);
         itemListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -152,6 +171,22 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id==R.id.action_sync){
+            //SqliteClass.getInstance(getContext()).databasehelp.deleteDataBase();
+            for(int i=0;i<itemList.size();i++){
+                System.out.println("Documentos "+ itemList.get(i).getContador());
+
+            }
+            getList(itemList);
+        }
+
+        return false;
+    }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return true;
@@ -198,5 +233,51 @@ public class HomeFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
         return false;
+    }
+
+    class asyncTask extends AsyncTask<Boolean, Void, String> {
+
+        @Override
+        protected void onPreExecute() {
+            dialog = ProgressDialog.show(getActivity(), "", "Sincronizando", true);
+
+            super.onPreExecute();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @Override
+        protected void onPostExecute(String s) {
+            JSONObject postData = new JSONObject();
+            JSONObject response=null;
+            try {
+                    JSONArray jsonArray = null;
+
+                    JSONObject jsondoc = new JSONObject();
+                    jsonArray = null;
+                    jsondoc = protocol.getJson(ConstValue.URL_GET_DOCUMENTS);
+                    System.out.println("Mis documentos: " + jsondoc);
+                    JSONArray jsnArrayDoc = jsondoc.getJSONArray("documentos");
+
+                    for(int j=0 ; j<jsnArrayDoc.length() ; j++){
+                        JSONObject js = jsnArrayDoc.getJSONObject(j);
+                        documentClass=  new DocumentClass(jsnArrayDoc.getJSONObject(j).getString("id"),jsnArrayDoc.getJSONObject(j).getString("nombre"),jsnArrayDoc.getJSONObject(j).getInt("contador"),jsnArrayDoc.getJSONObject(j).getString("fecha"),jsnArrayDoc.getJSONObject(j).getString("codTema"),jsnArrayDoc.getJSONObject(j).getString("codUsuario"));
+                        SqliteClass.getInstance(getContext()).databasehelp.documentsql.addDocument(documentClass);
+
+
+                    }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected String doInBackground(Boolean... booleans) {
+            dialog.dismiss();
+            getList(itemList);
+            return null;
+        }
     }
 }

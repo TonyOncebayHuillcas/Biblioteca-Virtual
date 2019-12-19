@@ -3,10 +3,12 @@ package com.example.bibliotecavirtual.Views.Activitys;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -22,6 +24,7 @@ import android.util.Base64InputStream;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +51,7 @@ import org.json.JSONObject;
 public class DetailDocumentActivity extends AppCompatActivity {
     ActionBar actionBar;
     TextView title,autor,universidad,descargas;
-    Button download;
+    Button download,cancel;
     Protocol protocol;
     DocumentClass documentClass;
     ProgressDialog dialog;
@@ -70,6 +73,7 @@ public class DetailDocumentActivity extends AppCompatActivity {
         protocol =  new Protocol();
 
         download = (Button) findViewById(R.id.btn_share);
+        cancel = (Button) findViewById(R.id.btn_cancel);
 
         title = (TextView) findViewById(R.id.tv_title);
         autor = (TextView) findViewById(R.id.tv_author);
@@ -87,9 +91,43 @@ public class DetailDocumentActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                new descargaTask().execute(true);
+                final Dialog dialog1 = new Dialog(DetailDocumentActivity.this);
+                dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog1.setContentView(R.layout.alert_download);
+                TextView head = (TextView) dialog1.findViewById(R.id.alert_logout_title);
+                head.setText("Easy Note");
+                TextView content = (TextView) dialog1.findViewById(R.id.alert_logout_content);
+                content.setText("Está seguro de descargar este archivo?");
+
+                Button dialogButtonOk = (Button) dialog1.findViewById(R.id.alert_ok);
+                dialogButtonOk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new descargaTask().execute(true);
+                    }
+                });
+                Button dialogButtonCancel = (Button) dialog1.findViewById(R.id.alert_cancel);
+                dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog1.dismiss();
+                    }
+                });
+                dialog1.show();
+
             }
         });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailDocumentActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     class descargaTask extends AsyncTask<Boolean, Void, String> {

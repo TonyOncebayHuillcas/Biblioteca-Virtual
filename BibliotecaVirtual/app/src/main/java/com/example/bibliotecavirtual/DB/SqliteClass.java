@@ -327,6 +327,29 @@ public class SqliteClass {
                 return nombre;
             }
 
+            public ArrayList<DocumentClass> getContadorUser(String codUsuario) {
+                ArrayList<DocumentClass> orderClassList = new ArrayList<DocumentClass>();
+                String selectQuery = "SELECT * FROM " + TABLE_APP_DOCUMENT + " WHERE codUsuario = '" + codUsuario + "'";
+                SQLiteDatabase db = databasehelp.getWritableDatabase();
+                Cursor cursor = db.rawQuery(selectQuery, null);
+                if (cursor.moveToFirst()){
+                    do {
+                        DocumentClass item = new DocumentClass();
+                        //item.setId(cursor.getInt(cursor.getColumnIndex(KEY_DOCID)));
+                        item.setIdDoc(cursor.getString(cursor.getColumnIndex(KEY_DOCIDDOC)));
+                        item.setNombre(cursor.getString(cursor.getColumnIndex(KEY_DOCNAM)));
+                        item.setContador(cursor.getInt(cursor.getColumnIndex(KEY_DOCCONT)));
+                        item.setFecha(cursor.getString(cursor.getColumnIndex(KEY_DOCFECH)));
+                        item.setCodTema(cursor.getString(cursor.getColumnIndex(KEY_DOCCODTEM)));
+                        item.setCodUsuario(cursor.getString(cursor.getColumnIndex(KEY_DOCCODUSE)));
+                        item.setArchivo(cursor.getString(cursor.getColumnIndex(KEY_DOCARC)));
+                        orderClassList.add(item);
+                    } while (cursor.moveToNext());
+                }
+                db.close();
+                return orderClassList;
+            }
+
             public ArrayList<DocumentClass> getAllItem(){
                 ArrayList<DocumentClass> orderClassList = new ArrayList<DocumentClass>();
                 String selectQuery = "SELECT  * FROM " + TABLE_APP_DOCUMENT;

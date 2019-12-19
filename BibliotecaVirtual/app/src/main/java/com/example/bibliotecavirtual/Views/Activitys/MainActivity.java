@@ -129,12 +129,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         map.put("option", R.string.pagina_principal);
         map.put("image", R.drawable.ic_home);
         menuArray.add(map);
-
+/*
         map = new HashMap<String, Integer>();
         map.put("option", R.string.filtro_por);
         map.put("image", R.drawable.ic_search);
         menuArray.add(map);
-
+*/
         map = new HashMap<String, Integer>();
         map.put("option", R.string.puntaje);
         map.put("image", R.drawable.ic_point);
@@ -188,46 +188,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle your other action bar items...
-        int id = item.getItemId();
-        if (id==R.id.action_sync){
-            List<DocumentClass> itemList;
-            ArrayList<HashMap<String, String>> itemArray;
-            DocumentAdapter adapter;
-            ListView itemListView;
-            itemListView = (ListView) findViewById(R.id.list_documents);
-
-            itemArray = new ArrayList<HashMap<String,String>>();
-            itemList = new ArrayList<DocumentClass>();
-            itemList = SqliteClass.getInstance(context).databasehelp.documentsql.getAllItem();
-
-            for(int z=0; z < itemList.size(); z++){
-                DocumentClass cc = itemList.get(z);
-                HashMap<String, String> map = new HashMap<String, String>();
-                //map.put("id", String.valueOf(cc.getId()));
-                map.put("name_of_document",cc.getNombre());
-                map.put("author",SqliteClass.getInstance(context).databasehelp.userssql.getNameUser(cc.getCodUsuario()));
-                map.put("thema",SqliteClass.getInstance(context).databasehelp.temasql.getNameTem(cc.getCodTema()));
-                map.put("cant_descargas",String.valueOf(cc.getContador()));
-
-                itemArray.add(map);
-            }
-            adapter = new DocumentAdapter(activity, itemArray);
-            itemListView.setAdapter(adapter);
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -271,16 +231,16 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                 args = new Bundle();
                 fragment.setArguments(args);
                 break;
-            case 1:
+            //case 1:
                 //fragment = new ProfileFragment();
-                break;
-            case 2:
+              //  break;
+            case 1:
                 fragment = new ScoreFragment();
                 break;
-            case 3:
+            case 2:
                 fragment = new ProfileFragment();
                 break;
-            case 4:
+            case 3:
                 //fragment = new QueryFragment();
                 final Dialog dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

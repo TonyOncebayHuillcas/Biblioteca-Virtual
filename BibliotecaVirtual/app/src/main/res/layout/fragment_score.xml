@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".Views.Activitys.Fragment.ScoreFragment">
+    tools:context=".Views.Fragment.ScoreFragment">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,6 +37,7 @@
                         android:layout_gravity="center"
                         android:src="@drawable/ic_picture_as_pdf_"/>
                     <TextView
+                        android:id="@+id/tv_totalarchivos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
